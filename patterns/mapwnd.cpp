@@ -14,25 +14,25 @@ static HPEN MapPen;
 
 LRESULT CALLBACK MapWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    switch (msg)
-    {
-    case WM_CREATE:
-        break;
-    case WM_CLOSE:
-        DestroyWindow(hwnd);
-        break;
-    case WM_DESTROY:
-        break;
-    default:
-        return DefWindowProc(hwnd, msg, wParam, lParam);
-    }
-    return 0;
+	switch (msg)
+	{
+	case WM_CREATE:
+		break;
+	case WM_CLOSE:
+		DestroyWindow(hwnd);
+		break;
+	case WM_DESTROY:
+		break;
+	default:
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+	return 0;
 }
 
 void MapInit(HWND Parent)
 {
-    WNDCLASSEX wc;
-    RECT Rect;
+	WNDCLASSEX wc;
+	RECT Rect;
 
 	//
 	// Create pen
@@ -40,46 +40,46 @@ void MapInit(HWND Parent)
 
 	MapPen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 
-    ParentWnd = Parent;
+	ParentWnd = Parent;
 
-    memset(&wc, 0, sizeof(wc));
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.style = CS_OWNDC;
-    wc.lpfnWndProc = MapWndProc;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hInstance = GetModuleHandle(NULL);
-    wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = NULL;
-    wc.lpszMenuName = NULL;
-    wc.lpszClassName = "MapWnd";
-    wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	memset(&wc, 0, sizeof(wc));
+	wc.cbSize = sizeof(WNDCLASSEX);
+	wc.style = CS_OWNDC;
+	wc.lpfnWndProc = MapWndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = GetModuleHandle(NULL);
+	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = NULL;
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = "MapWnd";
+	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
 
-    if (!RegisterClassEx(&wc))
-    {
-        MessageBox(0, "Cannot register MapWnd Class", "Error", 0);
-        return;
-    }
+	if (!RegisterClassEx(&wc))
+	{
+		MessageBox(0, "Cannot register MapWnd Class", "Error", 0);
+		return;
+	}
 
-    GetClientRect(ParentWnd, &Rect);
+	GetClientRect(ParentWnd, &Rect);
 
-    MapWnd = CreateWindowEx(
-        0,
-        "MapWnd",
-        "MapWndPopup",
-        WS_OVERLAPPED | WS_CHILDWINDOW,
-        2,
-        2,
-        MAP_WND_SIZE,
-        MAP_WND_SIZE,
-        ParentWnd,
-        NULL,
-        GetModuleHandle(NULL),
-        NULL);
+	MapWnd = CreateWindowEx(
+		0,
+		"MapWnd",
+		"MapWndPopup",
+		WS_OVERLAPPED | WS_CHILDWINDOW,
+		2,
+		2,
+		MAP_WND_SIZE,
+		MAP_WND_SIZE,
+		ParentWnd,
+		NULL,
+		GetModuleHandle(NULL),
+		NULL);
 
-    ShowWindow(MapWnd, SW_NORMAL);
-    UpdateWindow(MapWnd);
+	ShowWindow(MapWnd, SW_NORMAL);
+	UpdateWindow(MapWnd);
 
 	MapUpdate();
 
@@ -92,27 +92,27 @@ void MapInit(HWND Parent)
 
 void MapResize(int Width, int Height)
 {
-    if (JpegWindowWidth() < 2*MAP_WND_SIZE ||
-        JpegWindowHeight() < 2*MAP_WND_SIZE )
-    {
+	if (JpegWindowWidth() < 2*MAP_WND_SIZE ||
+		JpegWindowHeight() < 2*MAP_WND_SIZE )
+	{
 		ShowWindow(MapWnd, SW_HIDE);
-        return;
-    }
+		return;
+	}
 
 	ShowWindow(MapWnd, SW_NORMAL);
 
-    MoveWindow( MapWnd,
+	MoveWindow( MapWnd,
 		MAP_WND_X,
 		MAP_WND_Y,
-        MAP_WND_SIZE,
-        MAP_WND_SIZE,
-        TRUE);
+		MAP_WND_SIZE,
+		MAP_WND_SIZE,
+		TRUE);
 }
 
 void MapRedraw(void)
 {
-    //InvalidateRect(MapWnd, NULL, TRUE);
-    //UpdateWindow(MapWnd);
+	//InvalidateRect(MapWnd, NULL, TRUE);
+	//UpdateWindow(MapWnd);
 }
 
 static void MapGetResolution(int * width, int * height)
@@ -148,7 +148,7 @@ void MapUpdate()
 	POINT jpegSize;
 	POINT scroll;
 	POINT jpegWndSize;
-    HDC mapDc = GetDC(MapWnd);
+	HDC mapDc = GetDC(MapWnd);
 
 	SelectObject(mapDc, MapPen);
 

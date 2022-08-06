@@ -9,36 +9,36 @@
 #define FLAG_FLIP 0x01
 #define FLAG_MIRROR 0x02
 
-typedef struct PatternEntry
+struct PatternEntry
 {
-    char    PatternName[64];
+	char    PatternName[64];
 
-    union
-    {
-        struct      // GL Context
-        {
-            unsigned char * TextureBuffer;
-            unsigned int TextureId;
-        };
-        char    Reserved[64];
-    };
+	union
+	{
+		struct      // GL Context
+		{
+			unsigned char * TextureBuffer;
+			unsigned int TextureId;
+		};
+		char    Reserved[64];
+	};
 
-    long    PosX;           // Relative to upper-left corner of parent window
-    long    PosY;
-    long    SavedPosX;      // Old position saved here during scrolling
-    long    SavedPosY;
-    long    PlaneX;         // Relative to upper-left corner of source image
-    long    PlaneY;
-    long    Width;
-    long    Height;
-    union
-    {
-        HWND    Hwnd;
-        unsigned __int64 Padding;
-    };
-    long    Flag;
-    float   BlendLevel;     // UpdateLayeredWindow
-} PatternEntry;
+	long    PosX;           // Relative to upper-left corner of parent window
+	long    PosY;
+	long    SavedPosX;      // Old position saved here during scrolling
+	long    SavedPosY;
+	long    PlaneX;         // Relative to upper-left corner of source image
+	long    PlaneY;
+	long    Width;
+	long    Height;
+	union
+	{
+		HWND    Hwnd;
+		unsigned __int64 Padding;
+	};
+	long    Flag;
+	float   BlendLevel;     // UpdateLayeredWindow
+};
 
 void JpegInit(HWND Parent);
 

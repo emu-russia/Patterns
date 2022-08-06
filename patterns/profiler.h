@@ -1,18 +1,18 @@
 #pragma once
 
-typedef struct _PROFILER_ENTRY
+struct PROFILER_ENTRY
 {
-    LIST_ENTRY  ListEntry;
+	LIST_ENTRY  ListEntry;
 
-    char        ProcName[128];
+	char        ProcName[128];
 
-    LARGE_INTEGER   StartTime;
+	LARGE_INTEGER   StartTime;
 
-    LARGE_INTEGER   StopTime;
+	LARGE_INTEGER   StopTime;
 
-    LARGE_INTEGER   ExecutionTime;
+	LARGE_INTEGER   ExecutionTime;
 
-} PROFILER_ENTRY, *PPROFILER_ENTRY;
+};
 
 BOOLEAN PerfRunning(void);
 
@@ -22,7 +22,7 @@ void PerfShutdown(void);
 
 void PerfRegisterEntity(char *ProcName);
 
-PPROFILER_ENTRY PerfGetEntry(char *ProcName);
+PROFILER_ENTRY * PerfGetEntry(char *ProcName);
 
 void PerfStart(char *ProcName);
 

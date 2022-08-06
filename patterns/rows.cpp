@@ -4,6 +4,7 @@
 
 extern float WorkspaceLambda;
 extern int WorkspaceRowIndex;
+extern int WorkspaceRowArrangement;
 
 LIST_ENTRY savedRows = { &savedRows, &savedRows };
 
@@ -42,23 +43,15 @@ static BOOL AddRowEntry(RowEntry * add)
 	return TRUE;
 }
 
-typedef struct
+struct CoordSize_Pair
 {
-	long x;
-	long width;
-} XW_Pair;
-
-int PairComparePred(const void * val1, const void * val2)
-{
-	XW_Pair * left = (XW_Pair *)val1;
-	XW_Pair * right = (XW_Pair *)val2;
-
-	return right->x < left->x;
-}
+	long xy;		// X or Y coordinate
+	long wh;		// Width or Height (size)
+};
 
 LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 {
-	XW_Pair * pairs;
+	CoordSize_Pair* pairs;
 
 	if (!numPatterns)
 	{
@@ -71,10 +64,10 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 	}
 
 	//
-	// Get patterns X/W pairs
+	// Get patterns XY/WH pairs
 	//
 
-	pairs = (XW_Pair *)malloc(sizeof(XW_Pair) * numPatterns);
+	pairs = (CoordSize_Pair *)malloc(sizeof(CoordSize_Pair) * numPatterns);
 	if (!pairs)
 	{
 		return NULL;
@@ -82,57 +75,47 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 
 	for (int i = 0; i < numPatterns; i++)
 	{
-		pairs[i].x = patterns[i].PlaneX;
-		pairs[i].width = patterns[i].Width;
+		pairs[i].xy = WorkspaceRowArrangement == 0 ? patterns[i].PlaneX : patterns[i].PlaneY;
+		pairs[i].wh = WorkspaceRowArrangement == 0 ? patterns[i].Width : patterns[i].Height;
 	}
 
 	//
 	// Sort minmax
 	//
 
-	// WTF Bug
-	//qsort(pairs, numPatterns, sizeof(XW_Pair), PairComparePred);
-
 	for (int c = 0; c < numPatterns - 1; c++)
 	{
 		for (int d = 0; d < numPatterns - c - 1; d++)
 		{
-			if (pairs[d].x > pairs[d + 1].x) // For decreasing order use <
+			if (pairs[d].xy > pairs[d + 1].xy) // For decreasing order use <
 			{
-				XW_Pair swap = pairs[d];
+				CoordSize_Pair swap = pairs[d];
 				pairs[d] = pairs[d + 1];
 				pairs[d + 1] = swap;
 			}
 		}
 	}
 
-	//for (int i = 0; i < numPatterns; i++)
-	//{
-	//	printf("x: %i, w: %i\n", pairs[i].x, pairs[i].width);
-	//}
-
-	//printf("------------------\n");
-
 	//
 	// Remove overlapping
 	//
 
-	XW_Pair next;
+	CoordSize_Pair next{};
 
-	next.x = pairs[0].x;
-	next.width = pairs[0].width;
+	next.xy = pairs[0].xy;
+	next.wh = pairs[0].wh;
 
 	for (int i = 1; i < numPatterns; i++)
 	{
-		if ( pairs[i].x >= next.x && 
-			pairs[i].x < ( next.x + next.width) )
+		if ( pairs[i].xy >= next.xy && 
+			pairs[i].xy < ( next.xy + next.wh) )
 		{
-			pairs[i].x = 0;
+			pairs[i].xy = 0;
 		}
 		else
 		{
-			next.x = pairs[i].x;
-			next.width = pairs[i].width;
+			next.xy = pairs[i].xy;
+			next.wh = pairs[i].wh;
 		}
 	}
 
@@ -144,13 +127,13 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 
 	for (int i = 0; i < numPatterns; i++)
 	{
-		if (pairs[i].x)
+		if (pairs[i].xy)
 		{
-			RowEntry entry;
+			RowEntry entry{};
 
 			entry.index = rowIndex++;
-			entry.planeX = pairs[i].x;
-			entry.planeY = 0;
+			entry.planeX = WorkspaceRowArrangement == 0 ? pairs[i].xy : 0;
+			entry.planeY = WorkspaceRowArrangement == 0 ? 0 : pairs[i].xy;
 
 			BOOL res = AddRowEntry(&entry);
 

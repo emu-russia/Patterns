@@ -128,9 +128,11 @@ Workspace → Show debug profile info: Displays debugging information of the pro
 
 ![/imgstore/settings.png](/imgstore/settings.png)
 
-You can change workspace Lambda / Delta parameters here.
+In Settings you set the Lambda and Delta parameters for the current working environment and other parameters.
 
-Lambda and Delta are measured in pixels, but the number may not be an integer.
+- Lambda and Delta are measured in pixels, but the number may not be an integer.
+- Row Index: initial row number
+- Row Arrangement: row arrangement (0 - vertical, 1 - horizontal)
 
 ## Status Line
 
@@ -144,3 +146,11 @@ The status bar displays the current state of the workspace environment:
 - Patterns Added: The amount of added patterns
 - Lambda/Delta: The current Lambda/Delta settings of working environment
 - Source Image: The name of the original image
+
+## Row number display
+
+The row numbers are also displayed. The starting row number and their arrangement (vertical/horizontal) can be set in the settings.
+
+|Vertical rows|Horizontal rows|
+|---|---|
+|![/imgstore/vert_rows.png](/imgstore/vert_rows.png)|![/imgstore/horz_rows.png](/imgstore/horz_rows.png)|

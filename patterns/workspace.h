@@ -5,47 +5,51 @@
 // Watch for x64 compatibility! (i.e. not implicit int vatiables, only data types with certain size)
 //
 
-typedef struct WorkspaceImage
+#pragma pack(push, 1)
+
+struct WorkspaceImage
 {
-    char Signature[4];          // "WRK\0"
+	char Signature[4];          // "WRK\0"
 
-    //
-    // Global settings
-    //
+	//
+	// Global settings
+	//
 
-    float   Lambda;
-    float   LambdaDelta;
-    long    Flag;               // "flip" / "mirror" checkbox state
-
-    //
-    // Pattern Database
-    //
+	float   Lambda;
+	float   LambdaDelta;
+	long    Flag;               // "flip" / "mirror" checkbox state
 
 	union
 	{
-		long DatabaseOffset;        // deprecated, replaced by row index
-		long RowIndex;
+		struct
+		{
+			short RowIndex;
+			short RowArrangement;
+		};
+		long RowSettings;
 	};
-    long DatabaseLength;        // deprecated
+	long Reserved;
 
-    //
-    // Source matching image layer
-    //
+	//
+	// Source matching image layer
+	//
 
-    long SourceImagePresent;
-    long SourceImageOffset;
-    long SourceImageLength;
-    long ScrollX;
-    long ScrollY;
+	long SourceImagePresent;
+	long SourceImageOffset;
+	long SourceImageLength;
+	long ScrollX;
+	long ScrollY;
 
-    //
-    // Added patterns layer
-    //
+	//
+	// Added patterns layer
+	//
 
-    long PatternsAdded;
-    long PatternsLayerOffset;
+	long PatternsAdded;
+	long PatternsLayerOffset;
 
-} WorkspaceImage;
+};
+
+#pragma pack(pop)
 
 void SaveWorkspace(char *filename);
 
