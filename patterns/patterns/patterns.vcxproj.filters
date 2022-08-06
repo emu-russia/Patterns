@@ -15,37 +15,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\jpegload.c">
+    <ClCompile Include="..\jpegload.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\jpegwnd.c">
+    <ClCompile Include="..\jpegwnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\listutils.c">
+    <ClCompile Include="..\listutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\main.c">
+    <ClCompile Include="..\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\patternwnd.c">
+    <ClCompile Include="..\patternwnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\profiler.c">
+    <ClCompile Include="..\profiler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\statuswnd.c">
+    <ClCompile Include="..\statuswnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\workspace.c">
+    <ClCompile Include="..\workspace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\xmlsaver.c">
+    <ClCompile Include="..\xmlsaver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\mapwnd.c">
+    <ClCompile Include="..\mapwnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\rows.c">
+    <ClCompile Include="..\rows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -81,6 +84,9 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="..\rows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

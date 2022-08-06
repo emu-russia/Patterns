@@ -1,10 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <Windows.h>
-#include <CommCtrl.h>
-#include "resource.h"
-#include "statuswnd.h"
+#include "pch.h"
 
 HWND StatusWnd = NULL;
 

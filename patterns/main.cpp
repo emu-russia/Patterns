@@ -3,24 +3,7 @@
 
 // Code is crappy look away :-)
 
-#define _CRT_SECURE_NO_WARNINGS
-
-#pragma comment(linker,"\"/manifestdependency:type='win32' \
-name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
-processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-
-#include <stdio.h>
-#include <windows.h>
-#include <Windowsx.h>
-#include <CommCtrl.h>
-#include "resource.h"
-#include "jpegwnd.h"
-#include "patternwnd.h"
-#include "statuswnd.h"
-#include "mapwnd.h"
-#include "workspace.h"
-#include "profiler.h"
-#include "xmlsaver.h"
+#include "pch.h"
 
 const char g_szClassName[] = "myWindowClass";
 
@@ -403,7 +386,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, "patterns, v.1.1\n(c) 2022, Emu-Russia", "About patterns",
+			MessageBox(NULL, "Patterns, v.1.1\n(c) 2022, Emu-Russia", "About Patterns",
 				MB_ICONINFORMATION | MB_OK);
 			break;
 		case ID_HELP_HOTKEYS:
@@ -534,7 +517,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
-	printf("patterns, v.1.0\n");
+	printf("Patterns, v.1.1\n");
 #endif
 
     AddProfilerProcs();
@@ -568,7 +551,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     MainWnd = CreateWindowEx(
         WS_EX_CLIENTEDGE,
         g_szClassName,
-        "patterns",
+        "Patterns",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
         NULL, NULL, hInstance, NULL);
