@@ -498,9 +498,9 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 	float * TexCoordX;
 	float * TexCoordY;
 	int RemoveButtonWidth = 2 * REMOVE_BITMAP_WIDTH;
-	PViasCollectionEntry Coll;
+	ViasCollectionEntry *Coll;
 	PLIST_ENTRY Entry;
-	PViasEntry Vias;
+	ViasEntry *Vias;
 	RGBQUAD LabelColor;
 	unsigned long ViasRgba;
 	RGBQUAD ViasLabelColor;
@@ -594,7 +594,7 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 
 		while ( Entry != &Coll->ViasHead )
 		{
-			Vias = (PViasEntry) Entry;
+			Vias = (ViasEntry *) Entry;
 
 			ViasPosX = (int)(Vias->OffsetX * WorkspaceLambda);
 			ViasPosY = (int)(Vias->OffsetY * WorkspaceLambda);

@@ -58,9 +58,9 @@ void XmlSave ( char * FileName )
 	PatternEntry * Pattern;
 	PatternItem * Item;
 	FILE *f;
-	PViasCollectionEntry Coll;
+	ViasCollectionEntry *Coll;
 	PLIST_ENTRY Entry;
-	PViasEntry Vias;
+	ViasEntry *Vias;
 	float CellPosX, CellPosY;
 	float CellWidth, CellHeight;
 	float ViasPosX, ViasPosY;
@@ -174,7 +174,7 @@ void XmlSave ( char * FileName )
 
 			while ( Entry != &Coll->ViasHead )
 			{
-				Vias = (PViasEntry)Entry;
+				Vias = (ViasEntry *)Entry;
 
 				ViasPosX = Vias->OffsetX;
 				ViasPosY = Vias->OffsetY;

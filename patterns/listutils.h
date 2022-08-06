@@ -1,3 +1,4 @@
+#pragma once
 
 void InitializeListHead(PLIST_ENTRY ListHead);
 

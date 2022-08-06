@@ -9,7 +9,7 @@
 #define FLAG_FLIP 0x01
 #define FLAG_MIRROR 0x02
 
-typedef struct PatternEntry
+struct PatternEntry
 {
 	char    PatternName[64];
 
@@ -38,7 +38,7 @@ typedef struct PatternEntry
 	};
 	long    Flag;
 	float   BlendLevel;     // UpdateLayeredWindow
-} PatternEntry;
+};
 
 void JpegInit(HWND Parent);
 

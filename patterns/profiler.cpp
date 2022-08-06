@@ -28,20 +28,20 @@ BOOLEAN PerfRunning(void)
 
 LARGE_INTEGER PerfTotalExecutionTime(void)
 {
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY * Entry;
 	LARGE_INTEGER Z;
 	LARGE_INTEGER One;
 
 	Z.QuadPart = 0;
 	One.QuadPart = 1;
 
-	Entry = (PPROFILER_ENTRY)PerfHead.Flink;
+	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
 
-	while (Entry != (PPROFILER_ENTRY)&PerfHead)
+	while (Entry != (PROFILER_ENTRY *)&PerfHead)
 	{
 		Z.QuadPart += Entry->ExecutionTime.QuadPart;
 
-		Entry = (PPROFILER_ENTRY)Entry->ListEntry.Flink;
+		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 	}
 
 	return Z.QuadPart ? Z : One;
@@ -49,7 +49,7 @@ LARGE_INTEGER PerfTotalExecutionTime(void)
 
 DWORD WINAPI PerfWorkerThread(LPVOID lpParameter)
 {
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY * Entry;
 	LARGE_INTEGER TotalTime;
 
 	//
@@ -60,13 +60,13 @@ DWORD WINAPI PerfWorkerThread(LPVOID lpParameter)
 	{
 		TotalTime = PerfTotalExecutionTime();
 
-		Entry = (PPROFILER_ENTRY)PerfHead.Flink;
+		Entry = (PROFILER_ENTRY *)PerfHead.Flink;
 
-		while (Entry != (PPROFILER_ENTRY)&PerfHead)
+		while (Entry != (PROFILER_ENTRY *)&PerfHead)
 		{
 			Entry->ExecutionTime.QuadPart = 0;
 
-			Entry = (PPROFILER_ENTRY)Entry->ListEntry.Flink;
+			Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 		}
 
 		if (TotalTime.QuadPart != 1) JpegRedraw();
@@ -115,9 +115,9 @@ void PerfShutdown(void)
 
 void PerfRegisterEntity(char *ProcName)
 {
-	PPROFILER_ENTRY  Entry;
+	PROFILER_ENTRY * Entry;
 
-	Entry = (PPROFILER_ENTRY)malloc(sizeof(PROFILER_ENTRY));
+	Entry = (PROFILER_ENTRY *)malloc(sizeof(PROFILER_ENTRY));
 
 	memset(Entry, 0, sizeof(PROFILER_ENTRY));
 
@@ -126,17 +126,17 @@ void PerfRegisterEntity(char *ProcName)
 	InsertTailList(&PerfHead, (PLIST_ENTRY)Entry);
 }
 
-PPROFILER_ENTRY PerfGetEntry(char *ProcName)
+PROFILER_ENTRY *PerfGetEntry(char *ProcName)
 {
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY *Entry;
 
-	Entry = (PPROFILER_ENTRY)PerfHead.Flink;
+	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
 
-	while (Entry != (PPROFILER_ENTRY)&PerfHead)
+	while (Entry != (PROFILER_ENTRY *)&PerfHead)
 	{
 		if (!strcmp(Entry->ProcName, ProcName)) return Entry;
 
-		Entry = (PPROFILER_ENTRY)Entry->ListEntry.Flink;
+		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 	}
 
 	return NULL;
@@ -144,7 +144,7 @@ PPROFILER_ENTRY PerfGetEntry(char *ProcName)
 
 void PerfStart(char *ProcName)
 {
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY *Entry;
 
 	Entry = PerfGetEntry(ProcName);
 
@@ -156,7 +156,7 @@ void PerfStart(char *ProcName)
 
 void PerfStop(char *ProcName)
 {
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY *Entry;
 
 	Entry = PerfGetEntry(ProcName);
 
@@ -172,7 +172,7 @@ void PerfUpdateStats(HDC hdc)
 {
 	char Text[1024];
 	int TextLength;
-	PPROFILER_ENTRY Entry;
+	PROFILER_ENTRY *Entry;
 	int y;
 	LARGE_INTEGER TotalTime;
 	RECT Rect;
@@ -203,9 +203,9 @@ void PerfUpdateStats(HDC hdc)
 
 	y = 0;
 
-	Entry = (PPROFILER_ENTRY)PerfHead.Flink;
+	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
 
-	while (Entry != (PPROFILER_ENTRY)&PerfHead)
+	while (Entry != (PROFILER_ENTRY *)&PerfHead)
 	{
 		TextLength = sprintf(Text, "%s: %.2f%%",
 			Entry->ProcName,
@@ -213,7 +213,7 @@ void PerfUpdateStats(HDC hdc)
 
 		TextOut(hdc, 0, y * FONT_HEIGHT, Text, TextLength);
 
-		Entry = (PPROFILER_ENTRY)Entry->ListEntry.Flink;
+		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 
 		y++;
 	}

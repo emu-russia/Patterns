@@ -13,7 +13,7 @@ enum
 	CellOther,
 };
 
-typedef struct PatternItem
+struct PatternItem
 {
 	char    Name[128];
 	float   Lambda;
@@ -26,7 +26,7 @@ typedef struct PatternItem
 	long    pcount;
 	long    ncount;
 	long    Type;
-} PatternItem;
+};
 
 enum
 {
@@ -35,7 +35,7 @@ enum
 	ViasInout,
 };
 
-typedef struct _ViasEntry
+struct ViasEntry
 {
 	LIST_ENTRY Entry;
 
@@ -47,9 +47,9 @@ typedef struct _ViasEntry
 
 	long Type;
 
-} ViasEntry, *PViasEntry;
+};
 
-typedef struct _ViasCollectionEntry
+struct ViasCollectionEntry
 {
 	LIST_ENTRY Entry;
 
@@ -57,7 +57,7 @@ typedef struct _ViasCollectionEntry
 
 	LIST_ENTRY ViasHead;
 
-} ViasCollectionEntry, *PViasCollectionEntry;
+};
 
 void PatternInit(HWND Parent, char * dbfile);
 
@@ -83,4 +83,4 @@ void PatternDestroy(void);
 
 void ParseDatabase(char *text);
 
-PViasCollectionEntry GetViasCollection ( char * PatternName );
+ViasCollectionEntry * GetViasCollection ( char * PatternName );

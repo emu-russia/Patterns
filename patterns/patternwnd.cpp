@@ -33,13 +33,13 @@ static HBRUSH GrayBrush;
 // Vias stuff
 //
 
-static void ViasClenupCollection ( PViasCollectionEntry Coll )
+static void ViasClenupCollection ( ViasCollectionEntry * Coll )
 {
-	PViasEntry Vias;
+	ViasEntry * Vias;
 
 	while ( !IsListEmpty ( &Coll->ViasHead ) )
 	{
-		Vias = (PViasEntry) Coll->ViasHead.Flink;
+		Vias = (ViasEntry *) Coll->ViasHead.Flink;
 
 		RemoveEntryList ( (PLIST_ENTRY)Vias );
 
@@ -49,11 +49,11 @@ static void ViasClenupCollection ( PViasCollectionEntry Coll )
 
 static void ViasCleanup (void)
 {
-	PViasCollectionEntry CollEntry;
+	ViasCollectionEntry * CollEntry;
 
 	while ( !IsListEmpty ( &ViasCollectionHead ) )
 	{
-		CollEntry = (PViasCollectionEntry)ViasCollectionHead.Flink;
+		CollEntry = (ViasCollectionEntry *)ViasCollectionHead.Flink;
 		
 		ViasClenupCollection (CollEntry);
 
@@ -63,16 +63,16 @@ static void ViasCleanup (void)
 	}
 }
 
-PViasCollectionEntry GetViasCollection ( char * PatternName )
+ViasCollectionEntry * GetViasCollection ( char * PatternName )
 {
 	PLIST_ENTRY Entry;
-	PViasCollectionEntry CollEntry;
+	ViasCollectionEntry * CollEntry;
 
 	Entry = ViasCollectionHead.Flink;
 
 	while ( Entry != &ViasCollectionHead )
 	{
-		CollEntry = (PViasCollectionEntry)Entry;
+		CollEntry = (ViasCollectionEntry *)Entry;
 
 		if ( !_stricmp ( CollEntry->PatternName, PatternName ) )
 			return CollEntry;
@@ -83,11 +83,11 @@ PViasCollectionEntry GetViasCollection ( char * PatternName )
 	return NULL;
 }
 
-static PViasCollectionEntry CreateViasCollection ( char * PatternName )
+static ViasCollectionEntry * CreateViasCollection ( char * PatternName )
 {
-	PViasCollectionEntry Coll;
+	ViasCollectionEntry * Coll;
 
-	Coll = (PViasCollectionEntry) malloc ( sizeof(ViasCollectionEntry) );
+	Coll = (ViasCollectionEntry *) malloc ( sizeof(ViasCollectionEntry) );
 	if ( Coll == NULL )
 		return NULL;
 
@@ -102,10 +102,10 @@ static PViasCollectionEntry CreateViasCollection ( char * PatternName )
 	return Coll;
 }
 
-PViasEntry AddVias ( char * PatternName, char * ViasName, float OffsetX, float OffsetY, long Type )
+ViasEntry * AddVias ( char * PatternName, char * ViasName, float OffsetX, float OffsetY, long Type )
 {
-	PViasCollectionEntry Coll;
-	PViasEntry Vias;
+	ViasCollectionEntry * Coll;
+	ViasEntry * Vias;
 
 	//
 	// Open/create vias collection
@@ -122,7 +122,7 @@ PViasEntry AddVias ( char * PatternName, char * ViasName, float OffsetX, float O
 	// Allocate and insert Vias Entry
 	//
 
-	Vias = (PViasEntry) malloc ( sizeof(ViasEntry) );
+	Vias = (ViasEntry *) malloc ( sizeof(ViasEntry) );
 	if ( Vias == NULL )
 		return NULL;
 
@@ -186,9 +186,9 @@ void DrawPattern ( PatternItem *Item,
 	int Width;
 	int Height;
 	int Flags;
-	PViasCollectionEntry Coll;
+	ViasCollectionEntry * Coll;
 	PLIST_ENTRY Entry;
-	PViasEntry Vias;
+	ViasEntry * Vias;
 	#define VIAS_SIZE 8
 	int ViasPosX, ViasPosY;
 	RECT ViasRect;
@@ -328,7 +328,7 @@ void DrawPattern ( PatternItem *Item,
 
 			while ( Entry != &Coll->ViasHead )
 			{
-				Vias = (PViasEntry) Entry;
+				Vias = (ViasEntry *) Entry;
 
 				ViasPosX = (int)(Vias->OffsetX * WorkspaceLambda);
 				ViasPosY = (int)(Vias->OffsetY * WorkspaceLambda);

@@ -7,7 +7,7 @@
 
 #pragma pack(push, 1)
 
-typedef struct WorkspaceImage
+struct WorkspaceImage
 {
 	char Signature[4];          // "WRK\0"
 
@@ -47,7 +47,7 @@ typedef struct WorkspaceImage
 	long PatternsAdded;
 	long PatternsLayerOffset;
 
-} WorkspaceImage;
+};
 
 #pragma pack(pop)
 

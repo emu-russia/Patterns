@@ -1,3 +1,4 @@
+#pragma once
 
 int JpegLoad(
 	char *filename,
