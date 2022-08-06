@@ -2,15 +2,15 @@
 
 typedef struct _PROFILER_ENTRY
 {
-    LIST_ENTRY  ListEntry;
+	LIST_ENTRY  ListEntry;
 
-    char        ProcName[128];
+	char        ProcName[128];
 
-    LARGE_INTEGER   StartTime;
+	LARGE_INTEGER   StartTime;
 
-    LARGE_INTEGER   StopTime;
+	LARGE_INTEGER   StopTime;
 
-    LARGE_INTEGER   ExecutionTime;
+	LARGE_INTEGER   ExecutionTime;
 
 } PROFILER_ENTRY, *PPROFILER_ENTRY;
 

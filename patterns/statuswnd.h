@@ -11,12 +11,12 @@ Source Image : Path / Not Loaded(last)
 
 // Status Bar Parts
 enum {
-    STATUS_SELECTED = 1,
-    STATUS_SCROLL,
-    STATUS_PATTERNS,
-    STATUS_ADDED,
-    STATUS_LAMBDA_DELTA,
-    STATUS_SOURCE_IMAGE,
+	STATUS_SELECTED = 1,
+	STATUS_SCROLL,
+	STATUS_PATTERNS,
+	STATUS_ADDED,
+	STATUS_LAMBDA_DELTA,
+	STATUS_SOURCE_IMAGE,
 };
 
 void CreateStatusBar(HWND Parent);

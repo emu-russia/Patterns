@@ -4,6 +4,7 @@
 
 extern float WorkspaceLambda;
 extern int WorkspaceRowIndex;
+extern int WorkspaceRowArrangement;
 
 LIST_ENTRY savedRows = { &savedRows, &savedRows };
 
@@ -90,9 +91,6 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 	// Sort minmax
 	//
 
-	// WTF Bug
-	//qsort(pairs, numPatterns, sizeof(XW_Pair), PairComparePred);
-
 	for (int c = 0; c < numPatterns - 1; c++)
 	{
 		for (int d = 0; d < numPatterns - c - 1; d++)
@@ -105,13 +103,6 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 			}
 		}
 	}
-
-	//for (int i = 0; i < numPatterns; i++)
-	//{
-	//	printf("x: %i, w: %i\n", pairs[i].x, pairs[i].width);
-	//}
-
-	//printf("------------------\n");
 
 	//
 	// Remove overlapping
