@@ -15,6 +15,7 @@ RMB over empty space : Scrolling
 extern HWND FlipWnd;
 extern HWND MirrorWnd;
 extern float WorkspaceLambda, WorkspaceLambdaDelta;
+extern int WorkspaceRowArrangement;
 
 extern BOOL ShowPatterns;
 
@@ -858,8 +859,8 @@ static void GL_DrawRowNumbers(void)
 	{
 		RowEntry * rowEntry = (RowEntry *)entry;
 
-		int posX = rowEntry->planeX + ScrollX;
-		int posY = 0;
+		int posX = WorkspaceRowArrangement == 0 ? rowEntry->planeX + ScrollX : 0;
+		int posY = WorkspaceRowArrangement == 0 ? 0 : rowEntry->planeY + ScrollY;
 
 		GL_Printf(posX, posY, 32, 32, TRUE, color, "%i", rowEntry->index);
 
