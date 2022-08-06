@@ -19,9 +19,6 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include "statuswnd.h"
 #include "mapwnd.h"
 #include "workspace.h"
-#include "textsaver.h"
-#include "text_vertical.h"
-#include "text_horz.h"
 #include "profiler.h"
 #include "xmlsaver.h"
 
@@ -148,29 +145,6 @@ void LoadPatternsDB(HWND Parent)
             ParseDatabase(buffer);
             free(buffer);
         }
-    }
-}
-
-void SavePatternsTxt(HWND Parent)
-{
-    OPENFILENAME ofn;
-    char szFileName[MAX_PATH] = "";
-
-    ZeroMemory(&ofn, sizeof(ofn));
-
-    ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
-    ofn.hwndOwner = Parent;
-    ofn.lpstrFilter = "Txt Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-    ofn.lpstrFile = szFileName;
-    ofn.nMaxFile = MAX_PATH;
-    ofn.Flags = OFN_EXPLORER | OFN_HIDEREADONLY;
-    ofn.lpstrDefExt = "txt";
-
-    if (GetOpenFileName(&ofn))
-    {
-        // Do something usefull with the filename stored in szFileName
-
-        TextSave(szFileName);
     }
 }
 
@@ -352,12 +326,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         case ID_FILE_LOAD_PATTERNS_DB:
             LoadPatternsDB(hwnd);
             break;
-        case ID_SAVE_PATIMG:
-            SaveImage(hwnd);
-            break;
-        case ID_SAVE_PATTXT:
-            SavePatternsTxt(hwnd);
-            break;
         case ID_SAVE_PATXML:
             SavePatternsXml(hwnd);
             break;
@@ -435,7 +403,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case ID_HELP_ABOUT:
-			MessageBox(NULL, "patterns, v.1.0\n(c) 2019, http://psxdev.ru", "About patterns",
+			MessageBox(NULL, "patterns, v.1.1\n(c) 2022, Emu-Russia", "About patterns",
 				MB_ICONINFORMATION | MB_OK);
 			break;
 		case ID_HELP_HOTKEYS:
@@ -570,21 +538,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
     AddProfilerProcs();
-
-    //
-    // Add available Text Savers
-    // Idea: make all text savers as pattern handler scripts ???
-    //
-
-    TextsAddPlugin("Vertical", TextSaverVertical);
-    TextsAddPlugin("Horizontal", TextSaverHorz);
-
-    //
-    // FIXME: Add Text Plugin saver select box in Options.
-    //
-
-    SelectedTextSaver = 0;
-    TextsSelectPlugin(SelectedTextSaver);
 
     GetCurrentDirectory(sizeof(CurrentWorkingDir), CurrentWorkingDir);
 

@@ -15,7 +15,6 @@
 #include <math.h>
 
 #include "jpegload.h"
-#include "jpegsave.h"
 #include "patternwnd.h"
 #include "mapwnd.h"
 #include "statuswnd.h"
@@ -2192,11 +2191,6 @@ ULONG JpegLoadImage(char *filename, BOOL Silent)
     PERF_STOP("JpegLoadImage");
 
     return JpegBufferSize;
-}
-
-// Save combined layers Jpeg image
-void JpegSaveImage(char *filename)
-{
 }
 
 // Return TRUE and selected area, if selection box is present and large enough.

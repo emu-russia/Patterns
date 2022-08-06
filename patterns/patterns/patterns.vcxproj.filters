@@ -18,9 +18,6 @@
     <ClCompile Include="..\jpegload.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\jpegsave.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\jpegwnd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,15 +34,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\statuswnd.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\text_horz.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\text_vertical.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\textsaver.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\workspace.c">
@@ -77,22 +65,10 @@
     <ClInclude Include="..\workspace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\textsaver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\text_vertical.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\text_horz.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\listutils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\jpegsave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\xmlsaver.h">

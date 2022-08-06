@@ -165,7 +165,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\jpegload.c" />
-    <ClCompile Include="..\jpegsave.c" />
     <ClCompile Include="..\jpegwnd.c" />
     <ClCompile Include="..\listutils.c" />
     <ClCompile Include="..\main.c" />
@@ -174,15 +173,11 @@
     <ClCompile Include="..\profiler.c" />
     <ClCompile Include="..\rows.c" />
     <ClCompile Include="..\statuswnd.c" />
-    <ClCompile Include="..\textsaver.c" />
-    <ClCompile Include="..\text_horz.c" />
-    <ClCompile Include="..\text_vertical.c" />
     <ClCompile Include="..\workspace.c" />
     <ClCompile Include="..\xmlsaver.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\jpegload.h" />
-    <ClInclude Include="..\jpegsave.h" />
     <ClInclude Include="..\jpegwnd.h" />
     <ClInclude Include="..\listutils.h" />
     <ClInclude Include="..\mapwnd.h" />
@@ -191,9 +186,6 @@
     <ClInclude Include="..\Resource\resource.h" />
     <ClInclude Include="..\rows.h" />
     <ClInclude Include="..\statuswnd.h" />
-    <ClInclude Include="..\textsaver.h" />
-    <ClInclude Include="..\text_horz.h" />
-    <ClInclude Include="..\text_vertical.h" />
     <ClInclude Include="..\workspace.h" />
     <ClInclude Include="..\xmlsaver.h" />
   </ItemGroup>

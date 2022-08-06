@@ -44,8 +44,6 @@ void JpegInit(HWND Parent);
 
 ULONG JpegLoadImage(char *filename, BOOL Silent);
 
-void JpegSaveImage(char *filename);
-
 BOOL JpegGetSelectRegion(LPRECT Region);
 
 void JpegSetSelectRegion(LPRECT Region);
