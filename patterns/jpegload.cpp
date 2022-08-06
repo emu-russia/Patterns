@@ -1,13 +1,6 @@
 // JPG Loading.
 
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <setjmp.h>
-#include <Windows.h>
-
-#include "jpeglib.h"
+#include "pch.h"
 
 struct my_error_mgr {
     struct jpeg_error_mgr pub;    /* "public" fields */

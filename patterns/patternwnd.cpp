@@ -1,19 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 // Pattern Database pane.
 
-#include <stdio.h>
-#include <setjmp.h>
-#include <math.h>
-#include <Windows.h>
-#include <windowsx.h>
-
-#include "jpegwnd.h"
-#include "jpegload.h"
-#include "statuswnd.h"
-#include "patternwnd.h"
-#include "profiler.h"
-#include "listutils.h"
+#include "pch.h"
 
 #define FLIP_BUTTON_HEIGHT  30
 

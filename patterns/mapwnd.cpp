@@ -1,15 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 // Simple mini-map window
 
-#include <stdio.h>
-#include <setjmp.h>
-#include <math.h>
-#include <Windows.h>
-#include <windowsx.h>
-
-#include "jpegwnd.h"
-#include "mapwnd.h"
+#include "pch.h"
 
 static HWND ParentWnd;
 static HWND MapWnd;

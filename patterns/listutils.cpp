@@ -1,6 +1,6 @@
 // Convenient double-linked list utils from Ntos core.
 
-#include <Windows.h>
+#include "pch.h"
 
 void InitializeListHead(PLIST_ENTRY ListHead)
 {

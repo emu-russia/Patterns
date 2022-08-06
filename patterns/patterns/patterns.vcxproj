@@ -85,14 +85,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../libjpeg;../Resource</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,14 +103,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../libjpeg;../Resource</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -122,15 +122,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../libjpeg;../Resource</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,15 +144,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>../../libjpeg;../Resource</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,36 +164,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\jpegload.c" />
-    <ClCompile Include="..\jpegsave.c" />
-    <ClCompile Include="..\jpegwnd.c" />
-    <ClCompile Include="..\listutils.c" />
-    <ClCompile Include="..\main.c" />
-    <ClCompile Include="..\mapwnd.c" />
-    <ClCompile Include="..\patternwnd.c" />
-    <ClCompile Include="..\profiler.c" />
-    <ClCompile Include="..\rows.c" />
-    <ClCompile Include="..\statuswnd.c" />
-    <ClCompile Include="..\textsaver.c" />
-    <ClCompile Include="..\text_horz.c" />
-    <ClCompile Include="..\text_vertical.c" />
-    <ClCompile Include="..\workspace.c" />
-    <ClCompile Include="..\xmlsaver.c" />
+    <ClCompile Include="..\jpegload.cpp" />
+    <ClCompile Include="..\jpegwnd.cpp" />
+    <ClCompile Include="..\listutils.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\mapwnd.cpp" />
+    <ClCompile Include="..\patternwnd.cpp" />
+    <ClCompile Include="..\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\profiler.cpp" />
+    <ClCompile Include="..\rows.cpp" />
+    <ClCompile Include="..\statuswnd.cpp" />
+    <ClCompile Include="..\workspace.cpp" />
+    <ClCompile Include="..\xmlsaver.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\jpegload.h" />
-    <ClInclude Include="..\jpegsave.h" />
     <ClInclude Include="..\jpegwnd.h" />
     <ClInclude Include="..\listutils.h" />
     <ClInclude Include="..\mapwnd.h" />
     <ClInclude Include="..\patternwnd.h" />
+    <ClInclude Include="..\pch.h" />
     <ClInclude Include="..\profiler.h" />
     <ClInclude Include="..\Resource\resource.h" />
     <ClInclude Include="..\rows.h" />
     <ClInclude Include="..\statuswnd.h" />
-    <ClInclude Include="..\textsaver.h" />
-    <ClInclude Include="..\text_horz.h" />
-    <ClInclude Include="..\text_vertical.h" />
     <ClInclude Include="..\workspace.h" />
     <ClInclude Include="..\xmlsaver.h" />
   </ItemGroup>

@@ -1,15 +1,7 @@
 // Workspace Backup (saving/loading)
 //
 
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <Windows.h>
-#include <windowsx.h>
-#include "jpegwnd.h"
-#include "patternwnd.h"
-#include "statuswnd.h"
-#include "workspace.h"
+#include "pch.h"
 
 extern HWND FlipWnd;
 extern HWND MirrorWnd;

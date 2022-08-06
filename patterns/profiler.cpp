@@ -5,13 +5,7 @@
 // 2. Encapsulate PerfStart / PerfStop in corresponding procedures to collect stats
 // 3. Update procedure stats periodically on screen as overlay strings
 
-#define _CRT_SECURE_NO_WARNINGS
-
-#include <stdio.h>
-#include <Windows.h>
-#include "profiler.h"
-#include "jpegwnd.h"
-#include "listutils.h"
+#include "pch.h"
 
 static BOOLEAN PerfActive;
 

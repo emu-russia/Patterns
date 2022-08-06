@@ -1,33 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-//
-// Enable pattern texture caching
-//
-
-#define TEXCACHE
-
-#include <Windows.h>
-#include <windowsx.h>
-#include "resource.h"
-
-#include <stdarg.h>
-#include <stdio.h>
-#include <math.h>
-
-#include "jpegload.h"
-#include "jpegsave.h"
-#include "patternwnd.h"
-#include "mapwnd.h"
-#include "statuswnd.h"
-#include "jpegwnd.h"
-#include "profiler.h"
-#include "listutils.h"
-#include "rows.h"
-
-#ifdef USEGL
-#include <GL/gl.h>
-#pragma comment(lib, "opengl32.lib")
-#endif
+#include "pch.h"
 
 /*
 Controls:
@@ -2192,11 +2163,6 @@ ULONG JpegLoadImage(char *filename, BOOL Silent)
     PERF_STOP("JpegLoadImage");
 
     return JpegBufferSize;
-}
-
-// Save combined layers Jpeg image
-void JpegSaveImage(char *filename)
-{
 }
 
 // Return TRUE and selected area, if selection box is present and large enough.
