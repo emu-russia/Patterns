@@ -193,6 +193,7 @@ void DrawPattern ( PatternItem *Item,
 	int ViasPosX, ViasPosY;
 	RECT ViasRect;
 	HBRUSH ViasBrush;
+	int LabelPosX, LabelPosY;
 
 	if (Item)
 	{
@@ -219,7 +220,7 @@ void DrawPattern ( PatternItem *Item,
 
 		switch (Flags)
 		{
-			case 0:         // NORM
+			case 0:         // NORM (ident)
 				StretchBlt(hdc, Rect->left, Rect->top, Rect->right, Rect->bottom, hdcMem, 0, 0, Item->PatternWidth, Item->PatternHeight, SRCCOPY);
 				break;
 			case 1:         // FLIP
@@ -312,8 +313,32 @@ void DrawPattern ( PatternItem *Item,
 
 		if (Label)
 		{
+			LabelPosX = 0;
+			LabelPosY = 0;
+			SIZE LabelSize{};
+			int NameLen = (int)strlen(Item->Name);
+
 			SelectObject(hdc, PatternFont);
-			TextOut(hdc, 0, 0, Item->Name, (int)strlen(Item->Name));
+			GetTextExtentPoint32A(hdc, Item->Name, NameLen, &LabelSize);
+
+			switch (Flags)
+			{
+				case 0:			// NORM (ident)
+				default:
+					break;
+				case 1:			// FLIP
+					LabelPosX = Width - LabelSize.cx;
+					LabelPosY = Height - LabelSize.cy;
+					break;
+				case 2:			// MIRROR
+					LabelPosX = Width - LabelSize.cx;
+					break;
+				case 3:			// MIRROR FLIP
+					LabelPosY = Height - LabelSize.cy;
+					break;
+			}
+
+			TextOut(hdc, LabelPosX, LabelPosY, Item->Name, NameLen);
 		}
 
 		//
@@ -335,19 +360,19 @@ void DrawPattern ( PatternItem *Item,
 
 				switch (Flags)
 				{
-					case 0:
+					case 0:			// NORM (ident)
 					default:
 						ViasPosX -= VIAS_SIZE / 2;
 						ViasPosY -= VIAS_SIZE / 2;
 						break;
-					case 1:
+					case 1:			// FLIP
 						ViasPosX = Width - ViasPosX - VIAS_SIZE / 2;
 						ViasPosY = Height - ViasPosY - VIAS_SIZE / 2;
 						break;
-					case 2:
+					case 2:			// MIRROR
 						ViasPosX = Width - ViasPosX - VIAS_SIZE / 2;
 						break;
-					case 3:
+					case 3:			// MIRROR FLIP
 						ViasPosY = Height - ViasPosY - VIAS_SIZE / 2;
 						break;
 				}

@@ -31,7 +31,7 @@ extern float WorkspaceLambda;
 #define CELL_PRIORITY 1
 #define VIAS_PRIORITY 3
 
-static BOOL RemoveAmpersands(char * string)
+static BOOL ReplaceSpecialChars(char * string)
 {
 	BOOL Result = FALSE;
 	char * ptr = string;
@@ -43,7 +43,22 @@ static BOOL RemoveAmpersands(char * string)
 	{
 		if (*ptr == '&')
 		{
-			*ptr = 'n';
+			*ptr = 'A';
+			Result = TRUE;
+		}
+		else if (*ptr == '|')
+		{
+			*ptr = 'O';
+			Result = TRUE;
+		}
+		else if (*ptr == '/')
+		{
+			*ptr = 'N';
+			Result = TRUE;
+		}
+		else if (*ptr == '-')
+		{
+			*ptr = '_';
 			Result = TRUE;
 		}
 		ptr++;
@@ -64,7 +79,7 @@ void XmlSave ( char * FileName )
 	float CellPosX, CellPosY;
 	float CellWidth, CellHeight;
 	float ViasPosX, ViasPosY;
-	BOOL Ampersand = FALSE;
+	BOOL SpecialChars = FALSE;
 	BOOL Result;
 	CHAR Name[0x100];
 
@@ -93,9 +108,9 @@ void XmlSave ( char * FileName )
 		CellHeight = (float)Pattern->Height / WorkspaceLambda;
 
 		strcpy(Name, Pattern->PatternName);
-		Result = RemoveAmpersands(Name);
-		if (Result && !Ampersand)
-			Ampersand = TRUE;
+		Result = ReplaceSpecialChars(Name);
+		if (Result && !SpecialChars)
+			SpecialChars = TRUE;
 
 		fprintf ( f, "  <Entity>\n" );
 		fprintf ( f, "    <Label>%s</Label>\n", Name);
@@ -236,10 +251,10 @@ void XmlSave ( char * FileName )
 
 	fclose (f);
 
-	if (Ampersand)
+	if (SpecialChars)
 	{
-		MessageBox(NULL, "XmlSaver detected Ampersand (&) characters in some of cell names.\n"
-						 "Ampersands are restricted by XML standard and replaced to (n)",
+		MessageBox(NULL, "XmlSaver detected special characters in some of cell names.\n"
+						 "These characters are restricted by Verilog and replaced to compatible ones.",
 						 "Notice",
 						 MB_ICONINFORMATION);
 	}

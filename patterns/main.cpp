@@ -396,7 +396,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case ID_HELP_ABOUT:
-				MessageBox(NULL, "Patterns, v.1.1\n(c) 2022, Emu-Russia", "About Patterns",
+				MessageBox(NULL, "Patterns, " VERSION_STR "\n(c) " VERSION_YEAR_STR ", Emu-Russia", "About Patterns",
 					MB_ICONINFORMATION | MB_OK);
 				break;
 			case ID_HELP_HOTKEYS:
@@ -527,7 +527,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
-	printf("Patterns, v.1.1\n");
+	printf("Patterns, " VERSION_STR "\n");
 #endif
 
 	AddProfilerProcs();
