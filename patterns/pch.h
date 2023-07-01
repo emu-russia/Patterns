@@ -14,6 +14,9 @@ processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 #include <CommCtrl.h>
 #include "resource.h"
 
+#define VERSION_STR "v.1.2"
+#define VERSION_YEAR_STR "2023"
+
 extern "C"
 {
 #include "jpeglib.h"

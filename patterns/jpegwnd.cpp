@@ -58,6 +58,8 @@ HBITMAP RemoveBitmap;
 
 #define PATTERN_ENTRY_CLASS "PatternEntry"
 
+#define GL_FONT_OVERLAP 0.0625f
+
 static char * SavedImageName = NULL;
 
 static int TransCount[2];
@@ -466,11 +468,11 @@ static void GL_Printf( int x,
 		{
 			glTexCoord2f(cx, cy);
 			glVertex2i(x + 0, y + 0);
-			glTexCoord2f(cx, cy + 0.0625f);
+			glTexCoord2f(cx, cy + GL_FONT_OVERLAP);
 			glVertex2i(x, y + CharHeight);
-			glTexCoord2f(cx + 0.0625f, cy + 0.0625f);
+			glTexCoord2f(cx + GL_FONT_OVERLAP, cy + GL_FONT_OVERLAP);
 			glVertex2i(x + CharWidth, y + CharHeight);
-			glTexCoord2f(cx + 0.0625f, cy);
+			glTexCoord2f(cx + GL_FONT_OVERLAP, cy);
 			glVertex2i(x + CharWidth, y + 0);
 		}
 		glEnd();
@@ -575,13 +577,39 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 	// Cell name
 	//
 
-	GL_Printf ( Pattern->PosX,
-				Pattern->PosY,
-				16,
-				16,
-				FALSE,
-				LabelColor,
-				Pattern->PatternName);
+	{
+		int LabelPosX = 0;
+		int LabelPosY = 0;
+		SIZE LabelSize{};
+		float NameLen = (float)strlen(Pattern->PatternName);
+		LabelSize.cx = (LONG)(NameLen * 13.f);
+		LabelSize.cy = 16;
+
+		switch (Pattern->Flag & 3)
+		{
+			case 0:			// NORM (ident)
+			default:
+				break;
+			case 1:			// FLIP
+				LabelPosX = Width - LabelSize.cx;
+				LabelPosY = Height - LabelSize.cy;
+				break;
+			case 2:			// MIRROR
+				LabelPosX = Width - LabelSize.cx;
+				break;
+			case 3:			// MIRROR FLIP
+				LabelPosY = Height - LabelSize.cy;
+				break;
+		}
+
+		GL_Printf(Pattern->PosX + LabelPosX,
+			Pattern->PosY + LabelPosY,
+			16,
+			16,
+			FALSE,
+			LabelColor,
+			Pattern->PatternName);
+	}
 
 	//
 	// Viases

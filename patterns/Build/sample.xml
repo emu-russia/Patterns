@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ArrayOfEntity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>16.153847</LambdaX>
@@ -14,7 +14,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>15.961539</LambdaX>
@@ -40,7 +40,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>13.461539</LambdaX>
@@ -66,7 +66,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>12.884616</LambdaX>
@@ -131,7 +131,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>12-OAI</Label>
+    <Label>12_OAI</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>12.307693</LambdaHeight>
     <LambdaX>11.153847</LambdaX>
@@ -196,7 +196,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
+    <Label>a</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>25.161539</LambdaX>
@@ -209,7 +209,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>out</Label>
+    <Label>x</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>25.361538</LambdaX>
@@ -222,7 +222,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>11.153847</LambdaX>
@@ -235,7 +235,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>10.769231</LambdaX>
@@ -274,7 +274,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
+    <Label>a</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>23.815384</LambdaX>
@@ -287,7 +287,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>out</Label>
+    <Label>x</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>24.015385</LambdaX>
@@ -313,20 +313,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
-    <LambdaWidth>1</LambdaWidth>
-    <LambdaHeight>1</LambdaHeight>
-    <LambdaX>14.615385</LambdaX>
-    <LambdaY>600.769226</LambdaY>
-    <LambdaEndX>1</LambdaEndX>
-    <LambdaEndY>1</LambdaEndY>
-    <Type>ViasInput</Type>
-    <ColorOverride>Black</ColorOverride>
-    <LabelAlignment>TopRight</LabelAlignment>
-    <Priority>3</Priority>
-  </Entity>
-  <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>10.961539</LambdaX>
@@ -352,7 +339,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>12-OAI</Label>
+    <Label>12_OAI</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>12.307693</LambdaHeight>
     <LambdaX>9.807693</LambdaX>
@@ -378,7 +365,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>10.961539</LambdaX>
@@ -402,19 +389,6 @@
     <ColorOverride>Black</ColorOverride>
     <LabelAlignment>TopLeft</LabelAlignment>
     <Priority>1</Priority>
-  </Entity>
-  <Entity>
-    <Label>in</Label>
-    <LambdaWidth>1</LambdaWidth>
-    <LambdaHeight>1</LambdaHeight>
-    <LambdaX>14.807693</LambdaX>
-    <LambdaY>691.923096</LambdaY>
-    <LambdaEndX>1</LambdaEndX>
-    <LambdaEndY>1</LambdaEndY>
-    <Type>ViasInput</Type>
-    <ColorOverride>Black</ColorOverride>
-    <LabelAlignment>TopRight</LabelAlignment>
-    <Priority>3</Priority>
   </Entity>
   <Entity>
     <Label>AND2X</Label>
@@ -443,7 +417,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>63.461540</LambdaX>
@@ -456,7 +430,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>63.653847</LambdaX>
@@ -482,20 +456,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
-    <LambdaWidth>1</LambdaWidth>
-    <LambdaHeight>1</LambdaHeight>
-    <LambdaX>88.076927</LambdaX>
-    <LambdaY>742.115417</LambdaY>
-    <LambdaEndX>1</LambdaEndX>
-    <LambdaEndY>1</LambdaEndY>
-    <Type>ViasInput</Type>
-    <ColorOverride>Black</ColorOverride>
-    <LabelAlignment>TopRight</LabelAlignment>
-    <Priority>3</Priority>
-  </Entity>
-  <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>64.807693</LambdaX>
@@ -560,19 +521,6 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
-    <LambdaWidth>1</LambdaWidth>
-    <LambdaHeight>1</LambdaHeight>
-    <LambdaX>87.884621</LambdaX>
-    <LambdaY>656.538513</LambdaY>
-    <LambdaEndX>1</LambdaEndX>
-    <LambdaEndY>1</LambdaEndY>
-    <Type>ViasInput</Type>
-    <ColorOverride>Black</ColorOverride>
-    <LabelAlignment>TopRight</LabelAlignment>
-    <Priority>3</Priority>
-  </Entity>
-  <Entity>
     <Label>NOT1</Label>
     <LambdaWidth>29.038462</LambdaWidth>
     <LambdaHeight>6.153846</LambdaHeight>
@@ -586,7 +534,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
+    <Label>a</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>78.684616</LambdaX>
@@ -599,7 +547,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>out</Label>
+    <Label>x</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>78.484619</LambdaX>
@@ -612,7 +560,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>64.615387</LambdaX>
@@ -638,7 +586,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>in</Label>
+    <Label>a</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>78.876930</LambdaX>
@@ -651,7 +599,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>out</Label>
+    <Label>x</Label>
     <LambdaWidth>1</LambdaWidth>
     <LambdaHeight>1</LambdaHeight>
     <LambdaX>78.676926</LambdaX>
@@ -664,7 +612,7 @@
     <Priority>3</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>64.423080</LambdaX>
@@ -690,7 +638,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>65.384621</LambdaX>
@@ -716,7 +664,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>3-NAND2X</Label>
+    <Label>3_NAND2X</Label>
     <LambdaWidth>27.692308</LambdaWidth>
     <LambdaHeight>9.615385</LambdaHeight>
     <LambdaX>65.384621</LambdaX>
@@ -729,7 +677,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>65.961540</LambdaX>
@@ -781,7 +729,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>12-OAI</Label>
+    <Label>12_OAI</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>12.307693</LambdaHeight>
     <LambdaX>66.923080</LambdaX>
@@ -807,7 +755,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>67.307693</LambdaX>
@@ -846,7 +794,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>69.807693</LambdaX>
@@ -872,7 +820,7 @@
     <Priority>1</Priority>
   </Entity>
   <Entity>
-    <Label>4-MUX</Label>
+    <Label>4_MUX</Label>
     <LambdaWidth>28.461540</LambdaWidth>
     <LambdaHeight>45.576923</LambdaHeight>
     <LambdaX>70.000000</LambdaX>

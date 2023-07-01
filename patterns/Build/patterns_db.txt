@@ -1,4 +1,4 @@
-# Patterns database
+# PSXCPU Standard Cells
 
 # Pattern Syntax:
 # pattern name, type, source_lambda, pcount, ncount, image_path
@@ -199,8 +199,8 @@ pattern GARBAGE, CellOther, 5.0, 0, 0, "patterns_db/GARBAGE.jpg"
 
 # Vias types: ViasInput, ViasOutput, ViasInout
 
-#vias NOT1, in, 14.2, 3.2, ViasInput, 0
-#vias NOT1, out, 14.4, 0.4, ViasOutput, 0
+vias NOT1, a, 14.2, 3.2, ViasInput, 0
+vias NOT1, x, 14.4, 0.4, ViasOutput, 0
 
 #vias DLATCH, in, 5.0, 5.0, ViasInput, 0
 
