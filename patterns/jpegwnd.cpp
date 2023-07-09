@@ -750,7 +750,7 @@ static void GL_GetPatternColor(long patternType, GLubyte * red, GLubyte * green,
 			*red = 0; *green = 0; *blue = 128;
 			break;
 		case CellBuffer:
-			*red = 0; *green = 0; *blue = 128;
+			*red = 0; *green = 130; *blue = 180;
 			break;
 		case CellMux:
 			*red = 255; *green = 140; *blue = 0;
@@ -854,7 +854,7 @@ static void GL_DrawMapArea(void)
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glColor4f(.5f, .5f, .5f, .5f);
+		glColor4f(.5f, .5f, .5f, .8f);
 		glBegin(GL_QUADS);
 		glVertex2i(mapRect.left, mapRect.top);
 		glVertex2i(mapRect.right, mapRect.top);
