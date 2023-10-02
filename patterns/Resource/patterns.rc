@@ -1,100 +1,162 @@
+// Microsoft Visual C++ generated resource script.
+//
 #include <windows.h>
 #include "resource.h"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
 
 IDR_MYMENU MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "Load Source Image", ID_FILE_LOAD
-        MENUITEM "Load Pattern Database", ID_FILE_LOAD_PATTERNS_DB
-        MENUITEM "Save Patterns as XML", ID_SAVE_PATXML
-        MENUITEM "E&xit", ID_FILE_EXIT
+        MENUITEM "Load Source Image",           ID_FILE_LOAD
+        MENUITEM "Load Pattern Database",       ID_FILE_LOAD_PATTERNS_DB
+        MENUITEM "Save Patterns as TXT",        ID_SAVE_PATTXT
+        MENUITEM "Save Patterns as XML",        ID_SAVE_PATXML
+        MENUITEM "E&xit",                       ID_FILE_EXIT
     END
-
     POPUP "&Navigate"
     BEGIN
-	MENUITEM "Origin", ID_NAVIGATE_ORIGIN
-        MENUITEM "Ensure Visible", ID_ENSURE_VISIBLE
-	MENUITEM "Remove Selection", ID_REMOVE_SELECTION
+        MENUITEM "Origin",                      ID_NAVIGATE_ORIGIN
+        MENUITEM "Ensure Visible",              ID_ENSURE_VISIBLE
+        MENUITEM "Remove Selection",            ID_REMOVE_SELECTION
         MENUITEM SEPARATOR
-        MENUITEM "Show Next Unknown\tCtrl+U", ID_NAVIGATE_UNKNOWN
-        MENUITEM "Show Next Garbage\tCtrl+G", ID_NAVIGATE_GARBAGE
-        MENUITEM "Show Next Contains", ID_NAVIGATE_CONTAINS
+        MENUITEM "Show Next Unknown\tCtrl+U",   ID_NAVIGATE_UNKNOWN
+        MENUITEM "Show Next Garbage\tCtrl+G",   ID_NAVIGATE_GARBAGE
+        MENUITEM "Show Next Contains",          ID_NAVIGATE_CONTAINS
     END
-
     POPUP "&Workspace"
     BEGIN
-        MENUITEM "Load Workspace", ID_WORKSPACE_LOAD
-        MENUITEM "Save Workspace", ID_WORKSPACE_SAVE
+        MENUITEM "Load Workspace",              ID_WORKSPACE_LOAD
+        MENUITEM "Save Workspace",              ID_WORKSPACE_SAVE
         MENUITEM SEPARATOR
-        MENUITEM "Remove all added patterns", ID_REMOVE_ALL_PATTERNS
-	//MENUITEM "Debug Remove", ID_DEBUG_REMOVE
-        MENUITEM "Show debug profile info", ID_SHOW_PROFILER
-	MENUITEM "Show Patterns (Spacebar to toggle)", ID_SHOW_PATTERNS
+        MENUITEM "Remove all added patterns",   ID_REMOVE_ALL_PATTERNS
+        MENUITEM "Show debug profile info",     ID_SHOW_PROFILER
+        MENUITEM "Show Patterns (Spacebar to toggle)", ID_SHOW_PATTERNS
     END
-
     POPUP "&Settings"
     BEGIN
-        MENUITEM "&Settings", ID_SETTINGS
+        MENUITEM "&Settings",                   ID_SETTINGS
     END
-
     POPUP "&Help"
     BEGIN
-	MENUITEM "Hot&keys", ID_HELP_HOTKEYS
-        MENUITEM "A&bout", ID_HELP_ABOUT
+        MENUITEM "Hot&keys",                    ID_HELP_HOTKEYS
+        MENUITEM "A&bout",                      ID_HELP_ABOUT
     END
 END
 
-IDI_MYICON ICON "1.ico"
 
-IDD_SETTINGS DIALOG DISCARDABLE  20, 20, 239, 86
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_MYICON              ICON                    "1.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SETTINGS DIALOG 20, 20, 239, 86
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Settings"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "&OK",IDOK,174,18,50,14
     PUSHBUTTON      "&Cancel",IDCANCEL,174,35,50,14
-    
-    LTEXT       "Lambda:" IDC_STATIC, 2, 3, 66, 8
-    EDITTEXT    ID_LAMBDA, 66, 2, 50, 11, WS_TABSTOP, WS_EX_WINDOWEDGE
-
-    LTEXT       "Lambda Delta:" IDC_STATIC, 2, 3+20, 66, 16
-    EDITTEXT    ID_LAMBDA_DELTA, 66, 2+20, 50, 11, WS_TABSTOP, WS_EX_WINDOWEDGE
-
-    LTEXT       "Row Index:" IDC_STATIC, 2, 3+40, 66, 16
-    EDITTEXT    ID_ROW_INDEX, 66, 2+40, 50, 11, WS_TABSTOP, WS_EX_WINDOWEDGE
-
-    LTEXT       "Row Arrangement (0-Vert, 1-Horz):" IDC_STATIC, 2, 3+60, 66, 16
-    EDITTEXT    ID_ROW_ARRANGEMENT, 66, 2+60, 50, 11, WS_TABSTOP, WS_EX_WINDOWEDGE
+    LTEXT           "Lambda:",IDC_STATIC,2,3,66,8
+    EDITTEXT        ID_LAMBDA,66,2,50,11,0,WS_EX_WINDOWEDGE
+    LTEXT           "Lambda Delta:",IDC_STATIC,2,23,66,16
+    EDITTEXT        ID_LAMBDA_DELTA,66,22,50,11,0,WS_EX_WINDOWEDGE
+    LTEXT           "Row Index:",IDC_STATIC,2,43,66,16
+    EDITTEXT        ID_ROW_INDEX,66,42,50,11,0,WS_EX_WINDOWEDGE
+    LTEXT           "Row Arrangement (0-Vert, 1-Horz):",IDC_STATIC,2,63,66,16
+    EDITTEXT        ID_ROW_ARRANGEMENT,66,62,50,11,0,WS_EX_WINDOWEDGE
 END
 
-IDD_CONTAINS DIALOG DISCARDABLE  20, 20, 239, 66
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_CONTAINS DIALOG 20, 20, 239, 66
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Show Contains String"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "&OK",IDOK,174,18,50,14
     PUSHBUTTON      "&Cancel",IDCANCEL,174,35,50,14
-    
-    LTEXT       "Part of name:" IDC_STATIC, 2, 3, 66, 8
-    EDITTEXT    ID_PART_OF_NAME, 66, 2, 150, 11, WS_TABSTOP, WS_EX_WINDOWEDGE
+    LTEXT           "Part of name:",IDC_STATIC,2,3,66,8
+    EDITTEXT        ID_PART_OF_NAME,66,2,150,11,0,WS_EX_WINDOWEDGE
 END
 
-IDB_REMOVE BITMAP "remove.bmp"
 
-IDB_GLFONT BITMAP "glfont.bmp"
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
 
-PatternsAccel ACCELERATORS
-BEGIN 
-    VK_ESCAPE, ID_REMOVE_SELECTION, VIRTKEY
-    VK_HOME, ID_NAVIGATE_ORIGIN, VIRTKEY
-    VK_LEFT, ID_PATTERN_MOVE_LEFT, VIRTKEY
-    VK_RIGHT, ID_PATTERN_MOVE_RIGHT, VIRTKEY
-    VK_UP, ID_PATTERN_MOVE_UP, VIRTKEY
-    VK_DOWN, ID_PATTERN_MOVE_DOWN, VIRTKEY
-    "c", ID_EDIT_COPY, CONTROL, VIRTKEY
-    "v", ID_EDIT_PASTE, CONTROL, VIRTKEY
-    "u", ID_NAVIGATE_UNKNOWN, CONTROL, VIRTKEY
-    "g", ID_NAVIGATE_GARBAGE, CONTROL, VIRTKEY
-    VK_SPACE, ID_SHOW_PATTERNS, VIRTKEY
-END 
+IDB_REMOVE              BITMAP                  "remove.bmp"
+
+IDB_GLFONT              BITMAP                  "glfont.bmp"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+PATTERNSACCEL ACCELERATORS
+BEGIN
+    VK_ESCAPE,      ID_REMOVE_SELECTION,    VIRTKEY 
+    VK_HOME,        ID_NAVIGATE_ORIGIN,     VIRTKEY 
+    VK_LEFT,        ID_PATTERN_MOVE_LEFT,   VIRTKEY 
+    VK_RIGHT,       ID_PATTERN_MOVE_RIGHT,  VIRTKEY 
+    VK_UP,          ID_PATTERN_MOVE_UP,     VIRTKEY 
+    VK_DOWN,        ID_PATTERN_MOVE_DOWN,   VIRTKEY 
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    "U",            ID_NAVIGATE_UNKNOWN,    VIRTKEY, CONTROL
+    "G",            ID_NAVIGATE_GARBAGE,    VIRTKEY, CONTROL
+    VK_SPACE,       ID_SHOW_PATTERNS,       VIRTKEY 
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
