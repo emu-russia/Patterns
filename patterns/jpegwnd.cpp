@@ -857,6 +857,7 @@ static void GL_DrawRowNumbers(void)
 
 	color.rgbRed = color.rgbGreen = color.rgbBlue = 255;
 
+	ClearRowsList(savedRows);
 	RecalcRows(savedRows, PatternLayer, NumPatterns);
 
 	for (auto it= savedRows.begin(); it!= savedRows.end(); ++it)

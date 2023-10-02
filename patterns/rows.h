@@ -13,4 +13,6 @@ struct CoordSize_Pair
 	long wh;		// Width or Height (size)
 };
 
+void ClearRowsList(std::list<RowEntry*>& savedRows);
+
 void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry* patterns, int numPatterns);

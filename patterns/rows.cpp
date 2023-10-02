@@ -5,9 +5,10 @@
 extern int WorkspaceRowIndex;
 extern int WorkspaceRowArrangement;
 
-static void ClearOldList(std::list<RowEntry*>& savedRows)
+void ClearRowsList(std::list<RowEntry*>& savedRows)
 {
-	while (!savedRows.empty()) {
+	while (!savedRows.empty())
+	{
 		RowEntry* entry = savedRows.back();
 		savedRows.pop_back();
 		delete entry;
@@ -29,13 +30,6 @@ static void AddRowEntry(std::list<RowEntry*>& savedRows, RowEntry * add)
 
 void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry * patterns, int numPatterns)
 {
-	CoordSize_Pair* pairs;
-
-	if (!savedRows.empty())
-	{
-		ClearOldList(savedRows);
-	}
-
 	if (!numPatterns)
 	{
 		return;
@@ -45,11 +39,7 @@ void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry * patterns, int nu
 	// Get patterns XY/WH pairs
 	//
 
-	pairs = (CoordSize_Pair *)malloc(sizeof(CoordSize_Pair) * numPatterns);
-	if (!pairs)
-	{
-		return;
-	}
+	CoordSize_Pair* pairs = new CoordSize_Pair[numPatterns];
 
 	for (int i = 0; i < numPatterns; i++)
 	{
@@ -117,5 +107,5 @@ void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry * patterns, int nu
 		}
 	}
 
-	free(pairs);
+	delete [] pairs;
 }
