@@ -37,8 +37,6 @@ enum
 
 struct ViasEntry
 {
-	LIST_ENTRY Entry;
-
 	char ViasName[128];
 
 	float OffsetX;
@@ -51,12 +49,9 @@ struct ViasEntry
 
 struct ViasCollectionEntry
 {
-	LIST_ENTRY Entry;
-
 	char PatternName[128];
 
-	LIST_ENTRY ViasHead;
-
+	std::list<ViasEntry*> ViasHead;
 };
 
 void PatternInit(HWND Parent, char * dbfile);

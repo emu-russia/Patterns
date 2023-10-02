@@ -74,7 +74,6 @@ void XmlSave ( char * FileName )
 	PatternItem * Item;
 	FILE *f;
 	ViasCollectionEntry *Coll;
-	PLIST_ENTRY Entry;
 	ViasEntry *Vias;
 	float CellPosX, CellPosY;
 	float CellWidth, CellHeight;
@@ -185,11 +184,9 @@ void XmlSave ( char * FileName )
 
 		if ( Coll )
 		{
-			Entry = Coll->ViasHead.Flink;
-
-			while ( Entry != &Coll->ViasHead )
+			for (auto it= Coll->ViasHead.begin(); it!= Coll->ViasHead.end(); ++it)
 			{
-				Vias = (ViasEntry *)Entry;
+				Vias = *it;
 
 				ViasPosX = Vias->OffsetX;
 				ViasPosY = Vias->OffsetY;
@@ -241,8 +238,6 @@ void XmlSave ( char * FileName )
 				fprintf ( f, "    <LabelAlignment>TopRight</LabelAlignment>\n" );
 				fprintf ( f, "    <Priority>%i</Priority>\n", VIAS_PRIORITY );
 				fprintf ( f, "  </Entity>\n" );
-
-				Entry = Entry->Flink;
 			}
 		}
 	}

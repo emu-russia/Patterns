@@ -66,6 +66,8 @@ static int TransCount[2];
 
 static CRITICAL_SECTION updateSelection;
 
+std::list<RowEntry*> savedRows;
+
 #ifdef USEGL
 
 //
@@ -115,32 +117,24 @@ GLuint RemoveButtonTextureId;
 
 BOOL GlLock = FALSE;
 
-typedef struct _TEXCACHE_ENTRY
+struct TEXCACHE_ENTRY
 {
-	LIST_ENTRY Entry;
 	PCHAR OrigName;
 	GLuint TextureId;
-} TEXCACHE_ENTRY, *PTEXCACHE_ENTRY;
+};
 
-LIST_ENTRY TexCacheHead = { &TexCacheHead, &TexCacheHead };
+std::list<TEXCACHE_ENTRY*> TexCacheHead;
 
 BOOLEAN CheckTexCache(PCHAR ItemName, GLuint * TextureId)
 {
-	PLIST_ENTRY Entry;
-	PTEXCACHE_ENTRY TexEntry;
-
-	Entry = TexCacheHead.Flink;
-	while (Entry != &TexCacheHead)
-	{
-		TexEntry = (PTEXCACHE_ENTRY)Entry;
+	for (auto it = TexCacheHead.begin(); it != TexCacheHead.end(); ++it) {
+		TEXCACHE_ENTRY* TexEntry = *it;
 
 		if (!strcmp(TexEntry->OrigName, ItemName))
 		{
 			*TextureId = TexEntry->TextureId;
 			return TRUE;
 		}
-
-		Entry = Entry->Flink;
 	}
 
 	return FALSE;
@@ -148,10 +142,10 @@ BOOLEAN CheckTexCache(PCHAR ItemName, GLuint * TextureId)
 
 VOID AddTexCache(PCHAR ItemName, GLuint TextureId)
 {
-	PTEXCACHE_ENTRY TexEntry;
+	TEXCACHE_ENTRY *TexEntry;
 	int Len;
 
-	TexEntry = (PTEXCACHE_ENTRY)malloc(sizeof(TEXCACHE_ENTRY));
+	TexEntry = new TEXCACHE_ENTRY;
 	if (TexEntry == NULL)
 	{
 ErrorExit:
@@ -169,25 +163,19 @@ ErrorExit:
 
 	strcpy(TexEntry->OrigName, ItemName);
 
-	InsertTailList(&TexCacheHead, (PLIST_ENTRY)TexEntry);
+	TexCacheHead.push_back(TexEntry);
 }
 
 VOID ClearTexCache(VOID)
 {
-	PLIST_ENTRY Entry;
-	PTEXCACHE_ENTRY TexEntry;
-
-	while (!IsListEmpty(&TexCacheHead))
-	{
-		Entry = TexCacheHead.Flink;
-		TexEntry = (PTEXCACHE_ENTRY)Entry;
+	while (!TexCacheHead.empty()) {
+		TEXCACHE_ENTRY* TexEntry = TexCacheHead.back();
+		TexCacheHead.pop_back();
 
 		if (TexEntry->OrigName)
-			free (TexEntry->OrigName);
+			free(TexEntry->OrigName);
 
-		RemoveEntryList (Entry);
-
-		free(TexEntry);
+		delete TexEntry;
 	}
 }
 
@@ -502,7 +490,6 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 	float * TexCoordY;
 	int RemoveButtonWidth = 2 * REMOVE_BITMAP_WIDTH;
 	ViasCollectionEntry *Coll;
-	PLIST_ENTRY Entry;
 	ViasEntry *Vias;
 	RGBQUAD LabelColor;
 	unsigned long ViasRgba;
@@ -619,11 +606,9 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 
 	if ( Coll )
 	{
-		Entry = Coll->ViasHead.Flink;
-
-		while ( Entry != &Coll->ViasHead )
+		for (auto it= Coll->ViasHead.begin(); it!= Coll->ViasHead.end(); ++it)
 		{
-			Vias = (ViasEntry *) Entry;
+			Vias = *it;
 
 			ViasPosX = (int)(Vias->OffsetX * WorkspaceLambda);
 			ViasPosY = (int)(Vias->OffsetY * WorkspaceLambda);
@@ -692,8 +677,6 @@ static void GL_DrawPattern(PatternEntry * Pattern, BOOL Selected)
 						TRUE,
 						ViasLabelColor,
 						Vias->ViasName );
-
-			Entry = Entry->Flink;
 		}
 	}
 
@@ -874,25 +857,16 @@ static void GL_DrawRowNumbers(void)
 
 	color.rgbRed = color.rgbGreen = color.rgbBlue = 255;
 
-	LIST_ENTRY * rows = RecalcRows(PatternLayer, NumPatterns);
+	RecalcRows(savedRows, PatternLayer, NumPatterns);
 
-	if (!rows)
+	for (auto it= savedRows.begin(); it!= savedRows.end(); ++it)
 	{
-		return;
-	}
-
-	LIST_ENTRY * entry = rows->Flink;
-
-	while (entry != rows)
-	{
-		RowEntry * rowEntry = (RowEntry *)entry;
+		RowEntry * rowEntry = *it;
 
 		int posX = WorkspaceRowArrangement == 0 ? rowEntry->planeX + ScrollX : 0;
 		int posY = WorkspaceRowArrangement == 0 ? 0 : rowEntry->planeY + ScrollY;
 
 		GL_Printf(posX, posY, 32, 32, TRUE, color, "%i", rowEntry->index);
-
-		entry = entry->Flink;
 	}
 }
 

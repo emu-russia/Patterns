@@ -6,41 +6,29 @@ extern float WorkspaceLambda;
 extern int WorkspaceRowIndex;
 extern int WorkspaceRowArrangement;
 
-LIST_ENTRY savedRows = { &savedRows, &savedRows };
-
-static void ClearOldList()
+static void ClearOldList(std::list<RowEntry*>& savedRows)
 {
-	while (!IsListEmpty(&savedRows))
-	{
-		LIST_ENTRY * entry = savedRows.Flink;
-		RemoveEntryList(entry);
-		free(entry);
+	while (!savedRows.empty()) {
+		RowEntry* entry = savedRows.back();
+		savedRows.pop_back();
+		delete entry;
 	}
 }
 
-static BOOL AddRowEntry(RowEntry * add)
+static void AddRowEntry(std::list<RowEntry*>& savedRows, RowEntry * add)
 {
-	LIST_ENTRY * entry;
 	RowEntry * newEntry;
 	int entrySize = sizeof(RowEntry);
 
-	entry = (LIST_ENTRY *)malloc(entrySize);
-	if (!entry)
-	{
-		return FALSE;
-	}
+	newEntry = new RowEntry;
 
-	memset(entry, 0, entrySize);
+	memset(newEntry, 0, entrySize);
 
-	InsertTailList(&savedRows, entry);
-
-	newEntry = (RowEntry *)entry;
+	savedRows.push_back(newEntry);
 
 	newEntry->index = add->index;
 	newEntry->planeX = add->planeX;
 	newEntry->planeY = add->planeY;
-
-	return TRUE;
 }
 
 struct CoordSize_Pair
@@ -49,18 +37,18 @@ struct CoordSize_Pair
 	long wh;		// Width or Height (size)
 };
 
-LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
+void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry * patterns, int numPatterns)
 {
 	CoordSize_Pair* pairs;
 
-	if (!numPatterns)
+	if (!savedRows.empty())
 	{
-		return NULL;
+		ClearOldList(savedRows);
 	}
 
-	if (!IsListEmpty(&savedRows))
+	if (!numPatterns)
 	{
-		ClearOldList();
+		return;
 	}
 
 	//
@@ -70,7 +58,7 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 	pairs = (CoordSize_Pair *)malloc(sizeof(CoordSize_Pair) * numPatterns);
 	if (!pairs)
 	{
-		return NULL;
+		return;
 	}
 
 	for (int i = 0; i < numPatterns; i++)
@@ -135,17 +123,9 @@ LIST_ENTRY * RecalcRows(PatternEntry * patterns, int numPatterns)
 			entry.planeX = WorkspaceRowArrangement == 0 ? pairs[i].xy : 0;
 			entry.planeY = WorkspaceRowArrangement == 0 ? 0 : pairs[i].xy;
 
-			BOOL res = AddRowEntry(&entry);
-
-			if (!res)
-			{
-				free(pairs);
-				return NULL;
-			}
+			AddRowEntry(savedRows, &entry);
 		}
 	}
 
 	free(pairs);
-
-	return &savedRows;
 }

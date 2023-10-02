@@ -1,7 +1,5 @@
 // Standard Cells matching utility.
-// Copyright (c) 2015, psxdev.ru
-
-// Code is crappy look away :-)
+// Copyright (c) 2015-2023, emu-russia
 
 #include "pch.h"
 
@@ -396,7 +394,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 				break;
 			case ID_HELP_ABOUT:
-				MessageBox(NULL, "Patterns, " VERSION_STR "\n(c) " VERSION_YEAR_STR ", Emu-Russia", "About Patterns",
+				MessageBoxW(NULL, L"Patterns, " VERSION_STR L"\n© " VERSION_YEAR_STR L", Emu-Russia", L"About Patterns",
 					MB_ICONINFORMATION | MB_OK);
 				break;
 			case ID_HELP_HOTKEYS:
