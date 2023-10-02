@@ -17,7 +17,7 @@ static int NumPatterns;
 
 static HWND *PatternTiles;
 
-static LIST_ENTRY ViasCollectionHead = { &ViasCollectionHead, &ViasCollectionHead };
+static std::list<ViasCollectionEntry*> ViasCollectionHead;
 
 #define PATTERN_TILE_CLASS "PatternTile"
 
@@ -35,49 +35,33 @@ static HBRUSH GrayBrush;
 
 static void ViasClenupCollection ( ViasCollectionEntry * Coll )
 {
-	ViasEntry * Vias;
-
-	while ( !IsListEmpty ( &Coll->ViasHead ) )
-	{
-		Vias = (ViasEntry *) Coll->ViasHead.Flink;
-
-		RemoveEntryList ( (PLIST_ENTRY)Vias );
-
-		free (Vias);
+	while (!Coll->ViasHead.empty()) {
+		ViasEntry* Vias = Coll->ViasHead.back();
+		Coll->ViasHead.pop_back();
+		delete Vias;
 	}
 }
 
 static void ViasCleanup (void)
 {
-	ViasCollectionEntry * CollEntry;
-
-	while ( !IsListEmpty ( &ViasCollectionHead ) )
-	{
-		CollEntry = (ViasCollectionEntry *)ViasCollectionHead.Flink;
-		
-		ViasClenupCollection (CollEntry);
-
-		RemoveEntryList ( (PLIST_ENTRY)CollEntry );
-
-		free ( CollEntry );
+	while (!ViasCollectionHead.empty()) {
+		ViasCollectionEntry* CollEntry = ViasCollectionHead.back();
+		ViasClenupCollection(CollEntry);
+		ViasCollectionHead.pop_back();
+		delete CollEntry;
 	}
 }
 
 ViasCollectionEntry * GetViasCollection ( char * PatternName )
 {
-	PLIST_ENTRY Entry;
 	ViasCollectionEntry * CollEntry;
 
-	Entry = ViasCollectionHead.Flink;
-
-	while ( Entry != &ViasCollectionHead )
+	for (auto it= ViasCollectionHead.begin(); it!= ViasCollectionHead.end(); ++it)
 	{
-		CollEntry = (ViasCollectionEntry *)Entry;
+		CollEntry = *it;
 
 		if ( !_stricmp ( CollEntry->PatternName, PatternName ) )
 			return CollEntry;
-
-		Entry = Entry->Flink;
 	}
 
 	return NULL;
@@ -87,17 +71,13 @@ static ViasCollectionEntry * CreateViasCollection ( char * PatternName )
 {
 	ViasCollectionEntry * Coll;
 
-	Coll = (ViasCollectionEntry *) malloc ( sizeof(ViasCollectionEntry) );
-	if ( Coll == NULL )
-		return NULL;
-
-	memset ( Coll, 0, sizeof(ViasCollectionEntry) );
+	Coll = new ViasCollectionEntry;
 
 	strcpy ( Coll->PatternName, PatternName );
 
-	InitializeListHead ( &Coll->ViasHead );
+	Coll->ViasHead.clear();
 
-	InsertTailList ( &ViasCollectionHead, (PLIST_ENTRY)Coll );
+	ViasCollectionHead.push_back(Coll);
 
 	return Coll;
 }
@@ -122,9 +102,7 @@ ViasEntry * AddVias ( char * PatternName, char * ViasName, float OffsetX, float 
 	// Allocate and insert Vias Entry
 	//
 
-	Vias = (ViasEntry *) malloc ( sizeof(ViasEntry) );
-	if ( Vias == NULL )
-		return NULL;
+	Vias = new ViasEntry;
 
 	memset ( Vias, 0, sizeof(ViasEntry) );
 
@@ -133,7 +111,7 @@ ViasEntry * AddVias ( char * PatternName, char * ViasName, float OffsetX, float 
 	Vias->OffsetY = OffsetY;
 	Vias->Type = Type;
 
-	InsertTailList ( &Coll->ViasHead, (PLIST_ENTRY)Vias );
+	Coll->ViasHead.push_back(Vias);
 
 	return Vias;
 }
@@ -187,7 +165,6 @@ void DrawPattern ( PatternItem *Item,
 	int Height;
 	int Flags;
 	ViasCollectionEntry * Coll;
-	PLIST_ENTRY Entry;
 	ViasEntry * Vias;
 	#define VIAS_SIZE 8
 	int ViasPosX, ViasPosY;
@@ -349,11 +326,9 @@ void DrawPattern ( PatternItem *Item,
 
 		if ( Coll && ViasEnable )
 		{
-			Entry = Coll->ViasHead.Flink;
-
-			while ( Entry != &Coll->ViasHead )
+			for (auto it= Coll->ViasHead.begin(); it!= Coll->ViasHead.end(); ++it)
 			{
-				Vias = (ViasEntry *) Entry;
+				Vias = *it;
 
 				ViasPosX = (int)(Vias->OffsetX * WorkspaceLambda);
 				ViasPosY = (int)(Vias->OffsetY * WorkspaceLambda);
@@ -410,8 +385,6 @@ void DrawPattern ( PatternItem *Item,
 				SelectObject(hdc, ViasFont);
 				TextOut(hdc, ViasPosX + VIAS_SIZE, ViasPosY,
 							 Vias->ViasName, (int)strlen(Vias->ViasName) );
-
-				Entry = Entry->Flink;
 			}
 		}
 	}

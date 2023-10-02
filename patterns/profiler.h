@@ -2,8 +2,6 @@
 
 struct PROFILER_ENTRY
 {
-	LIST_ENTRY  ListEntry;
-
 	char        ProcName[128];
 
 	LARGE_INTEGER   StartTime;
@@ -11,7 +9,6 @@ struct PROFILER_ENTRY
 	LARGE_INTEGER   StopTime;
 
 	LARGE_INTEGER   ExecutionTime;
-
 };
 
 BOOLEAN PerfRunning(void);

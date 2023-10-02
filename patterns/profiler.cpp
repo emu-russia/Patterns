@@ -13,11 +13,7 @@ static HFONT PerfFont;
 
 #define FONT_HEIGHT 13
 
-static LIST_ENTRY PerfHead =
-{
-	&PerfHead,
-	&PerfHead
-};
+std::list<PROFILER_ENTRY *> PerfHead;
 
 static BOOLEAN PerfWorkerExitFlag;
 
@@ -28,20 +24,15 @@ BOOLEAN PerfRunning(void)
 
 LARGE_INTEGER PerfTotalExecutionTime(void)
 {
-	PROFILER_ENTRY * Entry;
 	LARGE_INTEGER Z;
 	LARGE_INTEGER One;
 
 	Z.QuadPart = 0;
 	One.QuadPart = 1;
 
-	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
-
-	while (Entry != (PROFILER_ENTRY *)&PerfHead)
-	{
+	for (auto it = PerfHead.begin(); it != PerfHead.end(); ++it) {
+		PROFILER_ENTRY* Entry = *it;
 		Z.QuadPart += Entry->ExecutionTime.QuadPart;
-
-		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 	}
 
 	return Z.QuadPart ? Z : One;
@@ -60,13 +51,9 @@ DWORD WINAPI PerfWorkerThread(LPVOID lpParameter)
 	{
 		TotalTime = PerfTotalExecutionTime();
 
-		Entry = (PROFILER_ENTRY *)PerfHead.Flink;
-
-		while (Entry != (PROFILER_ENTRY *)&PerfHead)
-		{
+		for (auto it = PerfHead.begin(); it != PerfHead.end(); ++it) {
+			Entry = *it;
 			Entry->ExecutionTime.QuadPart = 0;
-
-			Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 		}
 
 		if (TotalTime.QuadPart != 1) JpegRedraw();
@@ -117,26 +104,22 @@ void PerfRegisterEntity(char *ProcName)
 {
 	PROFILER_ENTRY * Entry;
 
-	Entry = (PROFILER_ENTRY *)malloc(sizeof(PROFILER_ENTRY));
+	Entry = new PROFILER_ENTRY;
 
 	memset(Entry, 0, sizeof(PROFILER_ENTRY));
 
 	strncpy(Entry->ProcName, ProcName, sizeof(Entry->ProcName) - 1);
 
-	InsertTailList(&PerfHead, (PLIST_ENTRY)Entry);
+	PerfHead.push_back(Entry);
 }
 
 PROFILER_ENTRY *PerfGetEntry(char *ProcName)
 {
 	PROFILER_ENTRY *Entry;
 
-	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
-
-	while (Entry != (PROFILER_ENTRY *)&PerfHead)
-	{
+	for (auto it = PerfHead.begin(); it != PerfHead.end(); ++it) {
+		Entry = *it;
 		if (!strcmp(Entry->ProcName, ProcName)) return Entry;
-
-		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 	}
 
 	return NULL;
@@ -203,17 +186,14 @@ void PerfUpdateStats(HDC hdc)
 
 	y = 0;
 
-	Entry = (PROFILER_ENTRY *)PerfHead.Flink;
+	for (auto it = PerfHead.begin(); it != PerfHead.end(); ++it) {
+		Entry = *it;
 
-	while (Entry != (PROFILER_ENTRY *)&PerfHead)
-	{
 		TextLength = sprintf(Text, "%s: %.2f%%",
 			Entry->ProcName,
-			((float)Entry->ExecutionTime.QuadPart * 100.0f) / (float)TotalTime.QuadPart );
+			((float)Entry->ExecutionTime.QuadPart * 100.0f) / (float)TotalTime.QuadPart);
 
 		TextOut(hdc, 0, y * FONT_HEIGHT, Text, TextLength);
-
-		Entry = (PROFILER_ENTRY *)Entry->ListEntry.Flink;
 
 		y++;
 	}

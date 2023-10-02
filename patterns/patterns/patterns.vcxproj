@@ -166,7 +166,6 @@
   <ItemGroup>
     <ClCompile Include="..\jpegload.cpp" />
     <ClCompile Include="..\jpegwnd.cpp" />
-    <ClCompile Include="..\listutils.cpp" />
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\mapwnd.cpp" />
     <ClCompile Include="..\patternwnd.cpp" />
@@ -185,7 +184,6 @@
   <ItemGroup>
     <ClInclude Include="..\jpegload.h" />
     <ClInclude Include="..\jpegwnd.h" />
-    <ClInclude Include="..\listutils.h" />
     <ClInclude Include="..\mapwnd.h" />
     <ClInclude Include="..\patternwnd.h" />
     <ClInclude Include="..\pch.h" />
