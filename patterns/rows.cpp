@@ -16,12 +16,9 @@ static void ClearOldList(std::list<RowEntry*>& savedRows)
 
 static void AddRowEntry(std::list<RowEntry*>& savedRows, RowEntry * add)
 {
-	RowEntry * newEntry;
-	int entrySize = sizeof(RowEntry);
+	RowEntry* newEntry = new RowEntry;
 
-	newEntry = new RowEntry;
-
-	memset(newEntry, 0, entrySize);
+	memset(newEntry, 0, sizeof(RowEntry));
 
 	newEntry->index = add->index;
 	newEntry->planeX = add->planeX;
@@ -29,12 +26,6 @@ static void AddRowEntry(std::list<RowEntry*>& savedRows, RowEntry * add)
 
 	savedRows.push_back(newEntry);
 }
-
-struct CoordSize_Pair
-{
-	long xy;		// X or Y coordinate
-	long wh;		// Width or Height (size)
-};
 
 void RecalcRows(std::list<RowEntry*>& savedRows, PatternEntry * patterns, int numPatterns)
 {
