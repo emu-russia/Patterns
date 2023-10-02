@@ -68,8 +68,6 @@ static CRITICAL_SECTION updateSelection;
 
 std::list<RowEntry*> savedRows;
 
-#ifdef USEGL
-
 //
 // OpenGL stuff
 //
@@ -1044,8 +1042,6 @@ static void GL_LoadTexture( PCHAR ItemName,
 #endif
 }
 
-#endif // USEGL
-
 static void UpdateSelectionStatus(void)
 {
 	char Text[0x100];
@@ -1171,18 +1167,6 @@ static void UpdateEntryPositions(int OffsetX, int OffsetY, BOOL Update, PatternE
 
 		Entry->PlaneX = Entry->PosX - ScrollX;
 		Entry->PlaneY = Entry->PosY - ScrollY;
-
-		if (OldPosX != Entry->PosX || OldPosY != Entry->PosY)
-		{
-#if 1
-#ifndef USEGL
-			MoveWindow(
-				Entry->Hwnd,
-				Entry->PosX, Entry->PosY,
-				Entry->Width, Entry->Height, Update);
-#endif  // USEGL
-#endif
-		}
 	}
 	else
 	{
@@ -1199,23 +1183,6 @@ static void UpdateEntryPositions(int OffsetX, int OffsetY, BOOL Update, PatternE
 
 			PatternLayer[n].PlaneX = PatternLayer[n].PosX - ScrollX;
 			PatternLayer[n].PlaneY = PatternLayer[n].PosY - ScrollY;
-
-			if (OldPosX != PatternLayer[n].PosX || OldPosY != PatternLayer[n].PosY)
-			{
-
-				//
-				// WDM is weak on windows movement.
-				//
-
-#if 1
-#ifndef USEGL
-				MoveWindow(
-					PatternLayer[n].Hwnd,
-					PatternLayer[n].PosX, PatternLayer[n].PosY,
-					PatternLayer[n].Width, PatternLayer[n].Height, Update );
-#endif  // USEGL
-#endif
-			}
 		}
 	}
 
@@ -1233,13 +1200,7 @@ static void RemovePatternEntry(int EntryIndex)
 	int Count, Index;
 	char Text[0x100];
 
-#ifdef USEGL
 	GlLock = TRUE;
-#endif
-
-#ifndef USEGL
-	DestroyWindow(Entry->Hwnd);
-#endif
 
 	Item = PatternGetItem(Entry->PatternName);
 
@@ -1254,9 +1215,7 @@ static void RemovePatternEntry(int EntryIndex)
 	PatternLayer = TempList;
 	NumPatterns--;
 
-#ifdef USEGL
 	GlLock = FALSE;
-#endif
 
 	//
 	// Reflect transistor counters
@@ -1282,199 +1241,6 @@ static void RemovePatternEntry(int EntryIndex)
 	SetStatusText(STATUS_ADDED, Text);
 }
 
-#ifndef USEGL
-
-static LRESULT CALLBACK PatternEntryProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	PAINTSTRUCT ps;
-	HDC hdc;
-	HDC hdcMem;
-	HGDIOBJ oldBitmap;
-	BITMAP bitmap;
-	RECT Rect;
-	int EntryIndex;
-	PatternEntry * Entry;
-	PatternItem * Item;
-	int CursorX, CursorY;
-	char Text[0x1000];
-	PatternEntry *Selected;
-
-	switch (msg)
-	{
-	case WM_CREATE:
-		break;
-	case WM_CLOSE:
-		DestroyWindow(hwnd);
-		break;
-	case WM_DESTROY:
-		break;
-
-	//
-	// Drag window
-	//
-
-	case WM_MOVE:
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			Entry->PosX = (int)(short)LOWORD(lParam);
-			Entry->PosY = (int)(short)HIWORD(lParam);
-
-			//
-			// Update Plane coords
-			//
-
-			Entry->PlaneX = Entry->PosX - ScrollX;
-			Entry->PlaneY = Entry->PosY - ScrollY;
-
-			//
-			// Update status line by selection
-			//
-
-			UpdateSelectionStatus ();
-		}
-		break;
-
-	case WM_MOUSEMOVE:
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (wParam == MK_LBUTTON && EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			CursorX = (int)(short)LOWORD(lParam);
-			CursorY = (int)(short)LOWORD(lParam);
-			if (!(CursorY < REMOVE_BITMAP_WIDTH && CursorX >= (Entry->Width - REMOVE_BITMAP_WIDTH)))
-			{
-				SendMessage(hwnd, WM_NCLBUTTONDOWN, HTCAPTION, NULL);
-			}
-		}
-		return FALSE;
-
-	//
-	// Pattern Selection
-	//
-
-	case WM_LBUTTONDOWN:
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			JpegSelectPattern(Entry);
-			DraggingPattern = TRUE;
-			return TRUE;
-		}
-		return FALSE;
-
-	//
-	// Pattern remove button press handler.
-	//
-
-	case WM_LBUTTONUP:
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			CursorX = LOWORD(lParam);
-			CursorY = HIWORD(lParam);
-
-			if (CursorY < REMOVE_BITMAP_WIDTH && CursorX >= (Entry->Width - REMOVE_BITMAP_WIDTH))
-			{
-				if (MessageBox(NULL, "Are you sure?", "User confirm", MB_ICONQUESTION | MB_YESNO) == IDYES)
-				{
-					RemovePatternEntry(EntryIndex);
-				}
-			}
-
-			DraggingPattern = FALSE;
-		}
-		break;
-
-	//
-	// Block source image scrolling, whenever RMB was pressed over added patterns layer
-	//
-
-	case WM_RBUTTONDOWN:
-		DragOccureInPattern = TRUE;
-		return TRUE;
-
-	case WM_RBUTTONUP:
-		DragOccureInPattern = FALSE;
-		return TRUE;
-
-	//
-	// Rotate flags
-	//
-	case WM_LBUTTONDBLCLK:
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			Entry->Flag += 1;
-			Entry->Flag &= 3;
-			InvalidateRect(Entry->Hwnd, NULL, TRUE);
-			UpdateWindow(Entry->Hwnd);
-		}
-		break;
-
-	case WM_PAINT:
-
-		PERF_START("Entry WM_PAINT");
-
-		hdc = BeginPaint(hwnd, &ps);
-
-		EntryIndex = GetPatternEntryIndexByHwnd(hwnd);
-		if (EntryIndex != -1)
-		{
-			Entry = &PatternLayer[EntryIndex];
-			Item = PatternGetItem(Entry->PatternName);
-			Rect.left = 0;
-			Rect.top = 0;
-			Rect.right = Entry->Width;
-			Rect.bottom = Entry->Height;
-			DrawPattern ( Item,
-						  hdc,
-						  &Rect,
-						  (Entry->Flag & FLAG_FLIP) ? TRUE : FALSE,
-						  (Entry->Flag & FLAG_MIRROR) ? TRUE : FALSE,
-						  TRUE,
-						  TRUE,
-						  Entry == SelectedPattern,
-						  TRUE );
-
-			//
-			// Pattern remove button.
-			//
-
-			if (RemoveBitmap)
-			{
-				hdcMem = CreateCompatibleDC(hdc);
-				oldBitmap = SelectObject(hdcMem, RemoveBitmap);
-
-				GetObject(RemoveBitmap, sizeof(bitmap), &bitmap);
-				BitBlt(hdc, Entry->Width - REMOVE_BITMAP_WIDTH, 0, REMOVE_BITMAP_WIDTH, REMOVE_BITMAP_WIDTH, hdcMem, 0, 0, SRCCOPY);
-
-				SelectObject(hdcMem, oldBitmap);
-				DeleteDC(hdcMem);
-			}
-		}
-
-		EndPaint(hwnd, &ps);
-
-		PERF_STOP("Entry WM_PAINT");
-
-		break;
-
-	case WM_ERASEBKGND:
-		return TRUE;
-
-	default:
-		return DefWindowProc(hwnd, msg, wParam, lParam);
-	}
-	return 0;
-}
-
-#endif
-
 void AddPatternEntry(char * PatternName)
 {
 	PatternItem * Item;
@@ -1490,9 +1256,7 @@ void AddPatternEntry(char * PatternName)
 
 	Selected = JpegGetSelectRegion(&Region);
 
-#ifdef USEGL
 	GlLock = TRUE;
-#endif
 
 	if (Selected && Item)
 	{
@@ -1526,37 +1290,10 @@ void AddPatternEntry(char * PatternName)
 		Entry.PosY = SelectionStartY;
 
 		//
-		// Create Window
-		//
-
-#ifndef USEGL
-		Entry.Hwnd = CreateWindowEx(
-			0,
-			PATTERN_ENTRY_CLASS,
-			"PatternEntryPopup",
-			WS_OVERLAPPED | WS_CHILDWINDOW | WS_EX_LAYERED | WS_EX_NOPARENTNOTIFY,
-			Entry.PosX,
-			Entry.PosY,
-			Entry.Width,
-			Entry.Height,
-			JpegWnd,
-			NULL,
-			GetModuleHandle(NULL),
-			NULL);
-
-		ShowWindow(Entry.Hwnd, SW_NORMAL);
-		UpdateWindow(Entry.Hwnd);
-#endif
-
-		//
 		// GL Texture
 		//
 
-#ifdef USEGL
-
 		GL_LoadTexture(Item->Name, Item->PatternBitmap, Item->PatternWidth, Item->PatternHeight, &Entry.TextureBuffer, &Entry.TextureId, FALSE, TRUE);
-
-#endif
 
 		//
 		// Add Entry in List
@@ -1577,9 +1314,7 @@ void AddPatternEntry(char * PatternName)
 
 	}
 
-#ifdef USEGL
 	GlLock = FALSE;
-#endif
 
 	PERF_STOP("AddPatternEntry");
 }
@@ -1601,13 +1336,6 @@ void UpdatePatternEntry(int EntryIndex, PatternEntry * Entry)
 	Orig->PlaneX = Entry->PlaneX;
 	Orig->PlaneY = Entry->PlaneY;
 
-#ifndef USEGL
-	MoveWindow(Orig->Hwnd, Orig->PosX, Orig->PosY, Orig->Width, Orig->Height, TRUE);
-#endif
-
-	//InvalidateRect(Orig->Hwnd, NULL, TRUE);
-	//UpdateWindow(Orig->Hwnd);
-
 	PERF_STOP("UpdatePatternEntry");
 }
 
@@ -1615,12 +1343,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
-#ifndef USEGL
-	HGDIOBJ oldBitmap;
-	HDC hdcMem;
-	BITMAP bitmap;
-	HGDIOBJ oldColor;
-#endif
 	RECT Rect;
 	char Text[0x100];
 	POINT Offset, Point;
@@ -1633,19 +1355,12 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	switch (msg)
 	{
 	case WM_CREATE:
-
-#ifdef USEGL
 		/* initialize OpenGL rendering */
 		hdc = GetDC(hwnd);
 		SetupPixelFormat(hdc);
 		hGLRC = wglCreateContext(hdc);
 		wglMakeCurrent(hdc, hGLRC);
 		GL_init();
-#else
-
-		JpegOffscreenDC = CreateCompatibleDC(GetWindowDC(hwnd));
-#endif  // USEGL
-
 		break;
 	case WM_CLOSE:
 
@@ -1654,15 +1369,11 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		DestroyWindow(hwnd);
 		break;
 	case WM_DESTROY:
-
-#ifdef USEGL
 		/* finish OpenGL rendering */
 		if (hGLRC) {
 			wglMakeCurrent(NULL, NULL);
 			wglDeleteContext(hGLRC);
 		}
-#endif
-
 		break;
 
 	case WM_PAINT:
@@ -1671,46 +1382,9 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		hdc = BeginPaint(hwnd, &ps);
 
-#ifdef USEGL
-
 		if (hGLRC) {
 			GL_redraw(hdc);
 		}
-
-#else
-
-		//
-		// Background image
-		//
-
-		if (JpegBitmap)
-		{
-			hdcMem = JpegOffscreenDC;
-			oldBitmap = SelectObject(hdcMem, JpegBitmap);
-
-			GetObject(JpegBitmap, sizeof(bitmap), &bitmap);
-			BitBlt(hdc, ScrollX, ScrollY, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-			SelectObject(hdcMem, oldBitmap);
-		}
-
-		//
-		// Selection box
-		//
-
-		if (RegionSelected)
-		{
-			oldColor = SelectObject(hdc, GetStockObject(DC_PEN));
-			SetDCPenColor(hdc, RGB(0xaa, 0xaa, 0xaa));
-			MoveToEx(hdc, SelectionStartX, SelectionStartY, NULL);
-			LineTo(hdc, SelectionEndX, SelectionStartY);
-			LineTo(hdc, SelectionEndX, SelectionEndY);
-			LineTo(hdc, SelectionStartX, SelectionEndY);
-			LineTo(hdc, SelectionStartX, SelectionStartY);
-			SelectObject(hdc, oldColor);
-		}
-
-#endif  // USEGL
 
 		PERF_STOP("JpegWnd WM_PAINT");
 
@@ -1747,7 +1421,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 
-#ifdef USEGL
 		EntryIndex = GetPatternEntryIndexByCursorPos(LOWORD(lParam), HIWORD(lParam));
 		if (EntryIndex != -1)
 		{
@@ -1772,7 +1445,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		else
-#endif
 		{
 			SelectionBegin = TRUE;
 			SelectionStartX = LOWORD(lParam);
@@ -1844,7 +1516,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			UpdateSelectionStatus();
 			JpegSelectPattern(NULL);
 		}
-#ifdef USEGL
 		if (DraggingPattern)
 		{
 			Selected = JpegGetSelectedPattern();
@@ -1859,7 +1530,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 			JpegRedraw();
 		}
-#endif  // USEGL
 		break;
 
 	case WM_RBUTTONUP:
@@ -1899,7 +1569,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 
-#ifdef USEGL
 		MapScrollBegin = FALSE;
 		DraggingPattern = FALSE;
 
@@ -1925,7 +1594,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				}
 			}
 		}
-#endif  // USEGL
 
 		SelectionBegin = FALSE;
 		InvalidateRect(JpegWnd, NULL, TRUE);
@@ -1934,8 +1602,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		PatternRedraw();
 		UpdateSelectionStatus();
 		break;
-
-#ifdef USEGL
 
 		//
 		// Rotate flags
@@ -1968,7 +1634,6 @@ LRESULT CALLBACK JpegProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			JpegRedraw();
 		}
 		break;
-#endif  // USEGL
 
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -1992,9 +1657,7 @@ void JpegInit(HWND Parent)
 	memset(&wc, 0, sizeof(wc));
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_OWNDC;
-#ifdef USEGL
 	wc.style |= CS_DBLCLKS;
-#endif
 	wc.lpfnWndProc = JpegProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
@@ -2029,48 +1692,17 @@ void JpegInit(HWND Parent)
 	ShowWindow(JpegWnd, SW_NORMAL);
 	UpdateWindow(JpegWnd);
 
-#ifndef USEGL
-
-	//
-	// Register pattern window class.
-	//
-
-	memset(&wc, 0, sizeof(wc));
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.style = CS_OWNDC | CS_DBLCLKS;
-	wc.lpfnWndProc = PatternEntryProc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = GetModuleHandle(NULL);
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(NULL, IDC_HAND);
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
-	wc.lpszMenuName = NULL;
-	wc.lpszClassName = PATTERN_ENTRY_CLASS;
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-
-	if (!RegisterClassEx(&wc))
-	{
-		MessageBox(0, "Cannot register Pattern EntryWnd Class", "Error", 0);
-	}
-
-#endif  // USEGL
-
 	//
 	// Load pattern remove button picture
 	//
 
 	RemoveBitmap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_REMOVE));
 
-#ifdef USEGL
-
 	GL_LoadTexture("RemoveBitmap", RemoveBitmap, REMOVE_BITMAP_WIDTH, REMOVE_BITMAP_WIDTH, &RemoveBitmapBuffer, &RemoveButtonTextureId, FALSE, FALSE);
 
 	GlFontBitmap = LoadBitmap(GetModuleHandle(NULL), MAKEINTRESOURCE(IDB_GLFONT));
 
 	GL_LoadTexture("GlFontBitmap", GlFontBitmap, GL_FONT_WIDTH, GL_FONT_WIDTH, &GlFontBuffer, &GlFontTextureId, TRUE, FALSE);
-
-#endif  // USEGL
 }
 
 static void JpegAddScanline(unsigned char *buffer, int stride, void *Param)
@@ -2111,7 +1743,6 @@ ULONG JpegLoadImage(char *filename, BOOL Silent)
 		return 0;
 	}
 
-#ifdef USEGL
 	//
 	// GL Mesh
 	//
@@ -2125,18 +1756,6 @@ ULONG JpegLoadImage(char *filename, BOOL Silent)
 		&JpegMesh.MeshHeight[0],
 		JPEG_MESH_LOG2,
 		0);
-
-#else
-
-	if (JpegBitmap)
-	{
-		DeleteObject(JpegBitmap);
-		JpegBitmap = NULL;
-	}
-	if (JpegBuffer)
-		JpegBitmap = CreateBitmapFromPixels(GetWindowDC(JpegWnd), JpegWidth, JpegHeight, 24, JpegBuffer);
-
-#endif  // USEGL
 
 	_splitpath(filename, disk, dir, fname, ext);
 
@@ -2212,9 +1831,7 @@ void JpegResize(int Width, int Height)
 
 	MoveWindow(JpegWnd, 2, 2, winWidth, winHeight, TRUE);
 
-#ifdef USEGL
 	GL_resize(winWidth, winHeight);
-#endif
 
 	// Reset selection box after window size was changed
 	JpegRemoveSelection();
@@ -2274,18 +1891,6 @@ void JpegDestroy(void)
 	ScrollX = ScrollY = 0;
 
 	//
-	// Source image layer.
-	//
-
-#ifndef USEGL
-	if (JpegBitmap)
-	{
-		DeleteObject(JpegBitmap);
-		JpegBitmap = NULL;
-	}
-#endif
-
-	//
 	// Patterns layer.
 	//
 
@@ -2299,26 +1904,18 @@ void JpegRemoveAllPatterns(void)
 	int Count;
 	PatternEntry *Entry;
 
-#ifdef USEGL
 	GlLock = TRUE;
-#endif
 
 	for (Count = 0; Count < NumPatterns; Count++)
 	{
 		Entry = GetPatternEntry(Count);
 
-#ifndef USEGL
-		DestroyWindow(Entry->Hwnd);
-#endif
-
-#ifdef USEGL
 		glDeleteTextures(1, &Entry->TextureId);
 		if (Entry->TextureBuffer)
 		{
 			free(Entry->TextureBuffer);
 			Entry->TextureBuffer = NULL;
 		}
-#endif
 
 	}
 
@@ -2329,11 +1926,9 @@ void JpegRemoveAllPatterns(void)
 	}
 	NumPatterns = 0;
 
-#ifdef USEGL
 	GlLock = FALSE;
 
 	ClearTexCache();
-#endif
 
 	TransCount[0] = TransCount[1] = 0;
 
@@ -2420,34 +2015,11 @@ void JpegSelectPattern(PatternEntry * Pattern)
 
 	if (Pattern)
 	{
-#ifndef USEGL
-		if (IsWindow(Pattern->Hwnd))
-		{
-			InvalidateRect(Pattern->Hwnd, NULL, FALSE);
-			UpdateWindow(Pattern->Hwnd);
-		}
-#endif
-
 		sprintf(
 			Text, "Selected: %s, Plane: %i,%i, Pos: %i:%i",
 			Pattern->PatternName, Pattern->PlaneX, Pattern->PlaneY, Pattern->PosX, Pattern->PosY);
 		SetStatusText(STATUS_SELECTED, Text);
 	}
-
-	//
-	// Update previously selected pattern
-	//
-
-#ifndef USEGL
-	if (OldPattern)
-	{
-		if (IsWindow(OldPattern->Hwnd))
-		{
-			InvalidateRect(OldPattern->Hwnd, NULL, FALSE);
-			UpdateWindow(OldPattern->Hwnd);
-		}
-	}
-#endif
 
 	PERF_STOP("JpegSelectPattern");
 }
@@ -2490,9 +2062,7 @@ void JpegEnsureVisible(PatternEntry * Pattern)
 
 	UpdateEntryPositions(-DeltaX, -DeltaY, TRUE, NULL);
 
-#ifdef USEGL
 	JpegRedraw();
-#endif
 
 	PERF_STOP("JpegEnsureVisible");
 }
@@ -2610,9 +2180,7 @@ void JpegGoto(int x, int y)
 
 	UpdateEntryPositions(-DeltaX, -DeltaY, TRUE, NULL);
 
-#ifdef USEGL
 	JpegRedraw();
-#endif
 }
 
 void JpegGotoOrigin(void)
