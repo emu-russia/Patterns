@@ -1,11 +1,5 @@
 #pragma once
 
-//
-// Enable OpenGL renderer
-//
-
-#define USEGL
-
 #define FLAG_FLIP 0x01
 #define FLAG_MIRROR 0x02
 

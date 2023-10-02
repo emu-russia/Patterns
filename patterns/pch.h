@@ -38,8 +38,6 @@ extern "C"
 #include "statuswnd.h"
 #include "workspace.h"
 #include "xmlsaver.h"
+#include "txtsaver.h"
 
-#ifdef USEGL
 #include <GL/gl.h>
-#pragma comment(lib, "opengl32.lib")
-#endif
