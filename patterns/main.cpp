@@ -155,6 +155,30 @@ void SavePatternsXml(HWND Parent)
 }
 
 
+void SavePatternsTxt(HWND Parent)
+{
+	OPENFILENAME ofn;
+	char szFileName[MAX_PATH] = "";
+
+	ZeroMemory(&ofn, sizeof(ofn));
+
+	ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
+	ofn.hwndOwner = Parent;
+	ofn.lpstrFilter = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
+	ofn.lpstrFile = szFileName;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER | OFN_HIDEREADONLY;
+	ofn.lpstrDefExt = "txt";
+
+	if (GetOpenFileName(&ofn))
+	{
+		// Do something usefull with the filename stored in szFileName
+
+		TxtSave(szFileName);
+	}
+}
+
+
 void WorkspaceHandler(HWND Parent, void (*Callback)(char *filename))
 {
 	OPENFILENAME ofn;
@@ -316,6 +340,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 				break;
 			case ID_FILE_LOAD_PATTERNS_DB:
 				LoadPatternsDB(hwnd);
+				break;
+			case ID_SAVE_PATTXT:
+				SavePatternsTxt(hwnd);
 				break;
 			case ID_SAVE_PATXML:
 				SavePatternsXml(hwnd);

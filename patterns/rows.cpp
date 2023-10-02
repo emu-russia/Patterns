@@ -2,7 +2,6 @@
 
 #include "pch.h"
 
-extern float WorkspaceLambda;
 extern int WorkspaceRowIndex;
 extern int WorkspaceRowArrangement;
 
@@ -24,11 +23,11 @@ static void AddRowEntry(std::list<RowEntry*>& savedRows, RowEntry * add)
 
 	memset(newEntry, 0, entrySize);
 
-	savedRows.push_back(newEntry);
-
 	newEntry->index = add->index;
 	newEntry->planeX = add->planeX;
 	newEntry->planeY = add->planeY;
+
+	savedRows.push_back(newEntry);
 }
 
 struct CoordSize_Pair

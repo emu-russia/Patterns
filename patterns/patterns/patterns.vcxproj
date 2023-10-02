@@ -178,6 +178,7 @@
     <ClCompile Include="..\profiler.cpp" />
     <ClCompile Include="..\rows.cpp" />
     <ClCompile Include="..\statuswnd.cpp" />
+    <ClCompile Include="..\txtsaver.cpp" />
     <ClCompile Include="..\workspace.cpp" />
     <ClCompile Include="..\xmlsaver.cpp" />
   </ItemGroup>
@@ -191,6 +192,7 @@
     <ClInclude Include="..\Resource\resource.h" />
     <ClInclude Include="..\rows.h" />
     <ClInclude Include="..\statuswnd.h" />
+    <ClInclude Include="..\txtsaver.h" />
     <ClInclude Include="..\workspace.h" />
     <ClInclude Include="..\xmlsaver.h" />
   </ItemGroup>
