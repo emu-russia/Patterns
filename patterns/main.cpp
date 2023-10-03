@@ -552,7 +552,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
-	printf("Patterns, " VERSION_STR "\n");
+	wprintf(L"Patterns, " VERSION_STR L"\n");
 #endif
 
 	AddProfilerProcs();
